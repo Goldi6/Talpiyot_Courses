@@ -9,7 +9,6 @@ export async function getStudentCurses() {
     const req = await axios.get(`${path}/student/courses`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
-    console.log(req.data);
     return req.data;
   } catch (error) {
     console.log(error.response);
@@ -21,7 +20,6 @@ export async function getStudentSchedule() {
     const req = await axios.get(`${path}/student/schedule`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
-    console.log(req.data);
     return req.data;
   } catch (error) {
     console.log(error.response);

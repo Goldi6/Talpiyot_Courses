@@ -19,20 +19,7 @@ import Profile from "components/Profile/Profile";
 import StudentSchedule from "components/Student/schedule/StudentSchedule";
 import StudentClass from "components/Student/class/StudentClass";
 import UnattendedPage from "components/Student/unattended/UnattendedPage";
-import attendancePage from "../components/Proffessor/attendance/AttendancePage";
 import AttendancePage from "../components/Proffessor/attendance/AttendancePage";
-
-// const Router = createBrowserRouter(routes);
-// export default function AppRouter() {
-//   return (
-//     <>
-//       <UserContextProvider>
-//         <HeaderLoader />
-//         <Router />
-//       </UserContextProvider>
-//     </>
-//   );
-// }
 
 const load = () => {
   console.log("loader");
@@ -75,10 +62,10 @@ export default function AppRouter() {
           >
             <Route
               loader={load}
-              index
-              path="courses"
-              element={<ProfessorCourses />}
+              path=""
+              element={<Navigate to="courses" replace />}
             ></Route>
+            <Route path="courses" element={<ProfessorCourses />}></Route>
             <Route path="attendance" element={<AttendancePage />}></Route>
             <Route
               path="courses/:id"
@@ -94,6 +81,12 @@ export default function AppRouter() {
               </StudentRoute>
             }
           >
+            <Route
+              loader={load}
+              index
+              path=""
+              element={<Navigate to="courses" replace />}
+            ></Route>
             {/* <Route path="" element={<Navigate to="courses" replace />}> */}
             <Route index path="courses" element={<StudentCourses />}></Route>
             <Route path="schedule" element={<StudentSchedule />}></Route>
