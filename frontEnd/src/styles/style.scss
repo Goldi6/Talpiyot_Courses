@@ -1,0 +1,133 @@
+
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+
+
+
+
+.nav-link{
+    all:inherit
+}
+
+.active{
+    font-weight: bold;
+    border-bottom: 1px solid yellow;
+}
+
+.container{min-height: 90vh;
+
+    padding-top: 3rem;
+
+
+}
+
+
+.on-hover:hover{
+    background: #ddd
+}
+.on-hover>*{
+    cursor: pointer;
+}
+
+.link-unset{
+    all: unset;
+    cursor: pointer;
+}
+
+.flex-book{
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+    gap: 3rem;
+    width: 100%;
+    .flex-half{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+    }
+    .half-text{
+        width: max-content;
+        white-space:nowrap;
+    
+    text-align: center;
+    }
+}
+
+main{
+    width: 100%;
+}
+.available-students{
+    max-height: 300px;
+    border: 1px solid #333;
+}
+
+//
+//
+//
+//
+.slider{
+     border: 1px solid black;
+}
+//
+//
+
+
+// ul{
+
+
+//     li{
+
+
+//         h2{
+// background-color: #ccc;   
+//             padding: 0.25rem 0.5rem;
+//             span{float: right;}
+// }
+
+//         ol{
+//             background: rgb(62, 62, 117);
+//             li{
+
+//                 h3{
+        
+//                     color: green;
+//                     text-decoration: overline;
+//                     border-bottom: 1px solid #333;
+//                 }
+                
+//                 div{
+//                     background: yellow;
+//                     padding-left: 1rem;
+//                     margin-left: 0.75rem;
+                    
+//                     h4{
+//                         text-decoration: underline;
+//                         color: black;
+//                     }
+//                     dl{
+//                         background-color: #999;
+//                         margin: 2rem;
+//                         *{
+//                             padding: 0.5rem;
+//                         }
+//                         dt{
+//                             color: black;
+//                         }
+//                         dd{
+//                             color:red;
+        
+//                         }
+//                     }
+        
+//                 }
+//             }
+//         }
+
+
+//     }
+
+// }
+

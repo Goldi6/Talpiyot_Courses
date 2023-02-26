@@ -1,0 +1,16 @@
+import { Container } from "@mui/material";
+import React from "react";
+import Typography from "@mui/material/Typography";
+export default function NotFound404() {
+  return (
+    <Container
+      className="container"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
+      <Typography variant="h1">404</Typography>
+    </Container>
+  );
+}
