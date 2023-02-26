@@ -1,7 +1,11 @@
 import React, { useContext, useState } from "react";
 import PickDate from "./PickDate";
 import PickTime from "./PickTime";
-import { getDateAndTimesFromMUI, isStartDateBeforeEndDate } from "utils/dates";
+import {
+  getDateAndTimesFromMUI,
+  isStartDateBeforeEndDate,
+  simpleDateToDate,
+} from "utils/dates";
 import { CourseContext } from "Context/courseContext";
 import { addCourseSchedule } from "server/db";
 import { Button } from "@mui/material";

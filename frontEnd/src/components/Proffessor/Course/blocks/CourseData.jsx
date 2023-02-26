@@ -25,8 +25,6 @@ export default function CourseData({
     Students: false,
   });
 
-  console.log("this");
-  console.log(courseData.endDate);
   return (
     <>
       <div className="flex-half">

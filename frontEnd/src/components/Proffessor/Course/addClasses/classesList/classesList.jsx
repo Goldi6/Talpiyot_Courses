@@ -18,7 +18,6 @@ import { updateClassesInCourse } from "Reducers/Actions/CourseAction";
 export default function ClassesList() {
   const { courseData, courseDispatch } = React.useContext(CourseContext);
   //
-  console.log(courseData.schedule);
   //
   const [open, setOpen] = React.useState(true);
 
