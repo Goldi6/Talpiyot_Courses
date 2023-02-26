@@ -132,7 +132,7 @@ router.delete(
     try {
       await Course.findByIdAndDelete(_id);
       await Schedule.deleteMany({ courseId: _id });
-      await Schedule.deleteMany({ courseId: _id });
+      await Attendant.deleteMany({ courseId: _id });
 
       res.send("Course and all its data is deleted!");
     } catch (error) {
