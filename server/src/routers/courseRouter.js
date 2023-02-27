@@ -212,6 +212,7 @@ router.post(
           courseId: _id,
           student: studentId,
           class: newSchedule._id,
+          date: newSchedule.date,
         });
         await attendance.save();
       }
