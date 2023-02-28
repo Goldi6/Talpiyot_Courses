@@ -22,8 +22,9 @@ export default function ClassAttendance() {
     const scheduleIds = passedClasses.map((classData) => classData.id);
     if (rendered) {
       GetClassAttendance(courseData.id, scheduleIds).then((data) => {
+        let classAttendances = [];
         if (data.length > 0) {
-          const classAttendances = data.map((classAttendanceData) => {
+          classAttendances = data.map((classAttendanceData) => {
             const attendanceData = classAttendanceData.data;
             const attendees = [];
             const absentees = [];
@@ -63,20 +64,19 @@ export default function ClassAttendance() {
               passed: true,
             };
           });
-
-          const futureClassesCustomize = futureClasses.map((item) => {
-            return {
-              class: {
-                date: item.dateAndTime.date,
-                time: item.dateAndTime.time,
-              },
-
-              passed: false,
-            };
-          });
-
-          setClassAttendance([...classAttendances, ...futureClassesCustomize]);
         }
+        const futureClassesCustomize = futureClasses.map((item) => {
+          return {
+            class: {
+              date: item.dateAndTime.date,
+              time: item.dateAndTime.time,
+            },
+
+            passed: false,
+          };
+        });
+
+        setClassAttendance([...classAttendances, ...futureClassesCustomize]);
       });
     }
 
