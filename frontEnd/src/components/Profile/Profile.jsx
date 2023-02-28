@@ -22,8 +22,8 @@ export default function Profile() {
     lastName: "",
     birthday: "",
     email: "",
-    password: "",
-    passwordRepeat: "",
+    // password: "",
+    // passwordRepeat: "",
     general: "",
   });
   const [isValidInputs_array, setIsValidInputs_array] = useState({
@@ -31,73 +31,73 @@ export default function Profile() {
     lastName: true,
     birthday: true,
     email: true,
-    password: true,
-    passwordRepeat: true,
+    // password: true,
+    // passwordRepeat: true,
   });
 
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
   const [birthday, setBirthday] = useState(userData.birthday);
   const [email, setEmail] = useState(userData.email);
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
 
   //TODO
-  const isSubmitDisabled = () => {
-    const inputsNotEmpty = [firstName, lastName, email].every(
-      (val) => val !== ""
-    );
-    const inputsAreValid = Object.values(isValidInputs_array).every(
-      (val) => val
-    );
+  // const isSubmitDisabled = () => {
+  //   const inputsNotEmpty = [firstName, lastName, email].every(
+  //     (val) => val !== ""
+  //   );
+  //   const inputsAreValid = Object.values(isValidInputs_array).every(
+  //     (val) => val
+  //   );
 
-    //console.log(!inputsNotEmpty && !inputsAreValid);
-    //return !inputsNotEmpty || !inputsAreValid;
-    return false;
-  };
+  //   //console.log(!inputsNotEmpty && !inputsAreValid);
+  //   //return !inputsNotEmpty || !inputsAreValid;
+  //   return false;
+  // };
 
-  const onBlurValidate_PasswordRepeatInput = (e) => {
-    const comparePasswords = (repeatedPassword) => {
-      return repeatedPassword === password;
-    };
+  // const onBlurValidate_PasswordRepeatInput = (e) => {
+  //   const comparePasswords = (repeatedPassword) => {
+  //     return repeatedPassword === password;
+  //   };
 
-    const input = e.target;
-    const inputValue = input.value.trim();
-    const inputName = input.getAttribute("name");
+  //   const input = e.target;
+  //   const inputValue = input.value.trim();
+  //   const inputName = input.getAttribute("name");
 
-    validateInput(
-      inputValue,
-      inputName,
-      comparePasswords,
-      "passwords don't match"
-    );
-  };
+  //   validateInput(
+  //     inputValue,
+  //     inputName,
+  //     comparePasswords,
+  //     "passwords don't match"
+  //   );
+  // };
 
-  const onBlurValidate_PasswordInput = (e) => {
-    const verifyPassword = (passwordInput) => {
-      const options = { min: 6, minSymbols: 0 };
-      return (
-        validator.isStrongPassword(passwordInput, options) ||
-        passwordInput === ""
-      );
-    };
+  // const onBlurValidate_PasswordInput = (e) => {
+  //   const verifyPassword = (passwordInput) => {
+  //     const options = { min: 6, minSymbols: 0 };
+  //     return (
+  //       validator.isStrongPassword(passwordInput, options) ||
+  //       passwordInput === ""
+  //     );
+  //   };
 
-    const input = e.target;
-    const inputValue = input.value.trim();
-    const inputName = input.getAttribute("name");
+  //   const input = e.target;
+  //   const inputValue = input.value.trim();
+  //   const inputName = input.getAttribute("name");
 
-    setPassword(
-      validateInput(
-        inputValue,
-        inputName,
-        verifyPassword,
-        "password length must be at least 6 chars and contain lower and uppercase letters and a number",
-        setInvalidInput_message,
-        setIsValidInputs_array
-      )
-        ? inputValue
-        : ""
-    );
-  };
+  //   setPassword(
+  //     validateInput(
+  //       inputValue,
+  //       inputName,
+  //       verifyPassword,
+  //       "password length must be at least 6 chars and contain lower and uppercase letters and a number",
+  //       setInvalidInput_message,
+  //       setIsValidInputs_array
+  //     )
+  //       ? inputValue
+  //       : ""
+  //   );
+  // };
   const onBlurValidate_EmailInput = (e) => {
     const input = e.target;
     const inputValue = input.value.trim();
@@ -242,18 +242,18 @@ export default function Profile() {
       placeholder: "Please enter your age",
       validator: onBlurValidate_DateInput,
     },
-    {
-      type: "password",
-      name: "password",
-      placeholder: "Enter a new password",
-      validator: onBlurValidate_PasswordInput,
-    },
-    {
-      type: "password",
-      name: "passwordRepeat",
-      placeholder: "Repeat your password",
-      validator: onBlurValidate_PasswordRepeatInput,
-    },
+    // {
+    //   type: "password",
+    //   name: "password",
+    //   placeholder: "Enter a new password",
+    //   validator: onBlurValidate_PasswordInput,
+    // },
+    // {
+    //   type: "password",
+    //   name: "passwordRepeat",
+    //   placeholder: "Repeat your password",
+    //   validator: onBlurValidate_PasswordRepeatInput,
+    // },
   ];
 
   const onSubmitForm = (e) => {
@@ -263,7 +263,7 @@ export default function Profile() {
       lastName,
       birthday,
       email,
-      password,
+      // password,
     };
 
     const keys = Object.keys(newData);
@@ -275,12 +275,9 @@ export default function Profile() {
         }
       }
     }
-    console.log("resulted user");
-    console.log(user);
 
     updateUser(user)
       .then((newData) => {
-        console.log(newData);
         userDispatch(userUpdateAccount_Action(newData));
         saveUserOnCookie(newData);
       })
@@ -290,8 +287,35 @@ export default function Profile() {
   return (
     <Container
       className="container"
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
     >
+      <Box
+        style={{
+          borderRight: "1px solid #333",
+          margin: "1rem",
+          padding: "1rem",
+        }}
+      >
+        <Typography variant="h3">User Data</Typography>
+        <Stack gap="1rem">
+          <Typography>
+            <b>first name:</b> {userData.user.firstName}
+          </Typography>
+          <Typography>
+            <b>last name:</b> {userData.user.lastName}
+          </Typography>
+          <Typography>
+            <b>email:</b> {userData.user.email}
+          </Typography>
+          <Typography>
+            <b>Birth date:</b> {userData.user.birthDate}
+          </Typography>
+        </Stack>
+      </Box>
       <Box
         onSubmit={onSubmitForm}
         component="form"
@@ -316,18 +340,20 @@ export default function Profile() {
               error={!isValidInputs_array[input.name]}
               type={input.type}
               label={input.name}
-              variant="outlined"
+              variant="standard"
               helperText={invalidInput_message[input.name]}
               InputProps={{}}
+              InputLabelProps={{ shrink: true }}
             />
           );
         })}
 
         <Stack spacing={2} direction="row" sx={{ pb: 20 }}>
+          <Button>Reset Password</Button>
           <Button
             variant="contained"
             type="submit"
-            disabled={isSubmitDisabled()}
+            // disabled={isSubmitDisabled()}
           >
             Update
           </Button>
