@@ -18,9 +18,8 @@ export const getList = async (type_path) => {
 };
 
 export const createCourse = async (courseData) => {
-  console.log(path + "course");
   try {
-    const req = await axios.post(`${path}/course`, courseData, {
+    const req = await axios.post(`${path}/courses`, courseData, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
@@ -44,7 +43,7 @@ export const deleteItem = async (id, from_path) => {
 
 export const getCourse = async (id) => {
   try {
-    const req = await axios.get(`${path}/course/${id}`, {
+    const req = await axios.get(`${path}/courses/${id}`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
@@ -54,14 +53,14 @@ export const getCourse = async (id) => {
   }
 };
 
-export const editCourseStudentList = async (course_id, student_id, action) => {
+export const addStudentToCourse = async (course_id, student_id) => {
   // "addStudent / removeStudent"
   try {
-    const router_path = `${path}/course/${action}/${course_id}/${student_id}`;
+    const router_path = `${path}/courses/${course_id}/students/${student_id}`;
 
     const AuthHeader = AUTH_Header(getTokenFromCookie());
 
-    const req = await axios.patch(
+    const req = await axios.post(
       router_path,
       {},
       {
@@ -75,9 +74,30 @@ export const editCourseStudentList = async (course_id, student_id, action) => {
   }
 };
 
+export const deleteStudentFromCourse = async (course_id, student_id) => {
+  // previous version used patch for both delete and post actions, editCourseStudentList() :"addStudent / removeStudent"
+  try {
+    const router_path = `${path}/courses/${course_id}/students/${student_id}`;
+
+    const AuthHeader = AUTH_Header(getTokenFromCookie());
+
+    const req = await axios.delete(
+      router_path,
+
+      {
+        headers: { ...AuthHeader },
+      }
+    );
+
+    return req.data;
+  } catch (error) {
+    passErrorMessage(error);
+  }
+};
+
 export const deleteClassFromCourse = async (course_id, class_id) => {
   try {
-    const router_path = `${path}/course/removeClass/${course_id}/${class_id}`;
+    const router_path = `${path}/courses/${course_id}/class/${class_id}`;
 
     const AuthHeader = AUTH_Header(getTokenFromCookie());
 
@@ -105,7 +125,7 @@ export const addCourseSchedule = async ({
 
   console.log(courseId);
   try {
-    const router_path = `${path}/course/addClass/${courseId}`;
+    const router_path = `${path}/courses/${courseId}/class`;
 
     const AuthHeader = AUTH_Header(getTokenFromCookie());
 

@@ -9,9 +9,8 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { CourseContext } from "Context/courseContext";
 import { IconButton, ListItem, Typography } from "@mui/material";
-import { editCourseStudentList } from "server/db";
+import { deleteStudentFromCourse } from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
-import ClassesList from "../addClasses/classesList/classesList";
 
 export default function NestedList() {
   const { courseData, courseDispatch } = React.useContext(CourseContext);
@@ -24,7 +23,7 @@ export default function NestedList() {
   };
 
   function onClickDeleteItem(id) {
-    editCourseStudentList(courseData._id, id, "removeStudent").then((res) => {
+    deleteStudentFromCourse(courseData._id, id).then((res) => {
       courseDispatch(updateStudentsInCourse({ ...res }));
     });
   }

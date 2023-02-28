@@ -8,10 +8,11 @@ const Attendant = require("../models/attendantsModel");
 
 // const { verifyRequestFields } = require("../middleware/modelFieldsVerifiers");
 
-const router = new express.Router();
+const router = express.Router();
 
-router.patch(
-  "/course/addStudent/:course_id/:student_id",
+// TODO post with path courses/:courseId/students
+router.post(
+  "/courses/:course_id/students/:student_id",
   auth,
   verifyProfessor,
   async (req, res, next) => {
@@ -23,46 +24,45 @@ router.patch(
       path: "schedule",
       select: "_id date",
     });
+
     if (!course) next(course);
-    //
-    //
+
     const courseStudents_SET = new Set();
     const courseStudents_idsString = [...course.students].map((id) => {
       courseStudents_SET.add(id.toString());
       return id.toString();
     });
+
     if (!courseStudents_idsString.includes(student_id)) {
-      const course_students_ARRAY = [...courseStudents_idsString].push(
-        student_id
-      );
       courseStudents_SET.add(student_id);
 
       course.students = Array.from(courseStudents_SET);
 
       await course.save();
 
-      const user = await User.findOne({ _id: student_id });
-      if (user.courses.length > 0) {
+      const student = await User.findOne({ _id: student_id });
+      if (student.courses.length > 0) {
         const useCourses_set = new Set();
-        [...user.courses].map((id) => {
+        [...student.courses].map((id) => {
           useCourses_set.add(id.toString());
         });
 
         useCourses_set.add(course_id);
 
-        user.courses = Array.from(useCourses_set);
+        student.courses = Array.from(useCourses_set);
       } else {
-        user.courses = [course_id];
+        student.courses = [course_id];
       }
 
-      await user.save();
+      await student.save();
       //FIXME:
       //?? swipe with schedule
 
       const dataForNewDocs = course.schedule.map((scheduleData) => {
         return {
+          // TODO: return new attendance
           courseId: course_id,
-          student: user._id,
+          student: student._id,
           class: scheduleData._id,
           date: scheduleData.date,
         };
@@ -77,8 +77,8 @@ router.patch(
   }
 );
 
-router.patch(
-  "/course/removeStudent/:course_id/:student_id",
+router.delete(
+  "/courses/:course_id/students/:student_id",
   auth,
   verifyProfessor,
   async (req, res, next) => {
@@ -105,7 +105,7 @@ router.patch(
   }
 );
 
-router.get("/course/:id", auth, async (req, res, next) => {
+router.get("/courses/:id", auth, async (req, res, next) => {
   const _id = req.params.id;
 
   try {
@@ -121,7 +121,7 @@ router.get("/course/:id", auth, async (req, res, next) => {
   }
 });
 router.delete(
-  "/course/:id",
+  "/courses/:id",
   auth,
   verifyProfessor,
 
@@ -130,6 +130,7 @@ router.delete(
     const _id = req.params.id;
 
     try {
+      // TODO: turn into a transaction
       await Course.findByIdAndDelete(_id);
       await Schedule.deleteMany({ courseId: _id });
       await Attendant.deleteMany({ courseId: _id });
@@ -142,7 +143,7 @@ router.delete(
 );
 
 router.post(
-  "/course",
+  "/courses",
   auth,
   verifyProfessor,
   //verifyRequestFields(Course, [dates]),
@@ -161,6 +162,8 @@ router.post(
     }
   }
 );
+//?? used
+//TODO: check if used
 router.patch(
   "/course/:id",
   auth,
@@ -169,9 +172,7 @@ router.patch(
 
   async (req, res, next) => {
     const updateData = req.body;
-    console.log(updateData);
     const _id = req.params.id;
-    console.log("Course patch");
     try {
       const course = await Course.findOneAndUpdate({ _id }, updateData, {
         new: true,
@@ -188,12 +189,12 @@ router.patch(
 );
 
 router.post(
-  "/course/addClass/:courseID",
+  "/courses/:courseId/class",
   auth,
   verifyProfessor,
   //verifyRequestFields(Schedule),
   async (req, res, next) => {
-    const _id = req.params.courseID;
+    const _id = req.params.courseId;
     const ScheduleData = req.body;
 
     try {
@@ -226,13 +227,13 @@ router.post(
 );
 
 router.delete(
-  "/course/removeClass/:courseID/:scheduleID",
+  "/courses/:courseId/class/:classId",
   auth,
   verifyProfessor,
   async (req, res, next) => {
     console.log(req.user);
-    const course_id = req.params.courseID;
-    const schedule_id = req.params.scheduleID;
+    const course_id = req.params.courseId;
+    const schedule_id = req.params.classId;
 
     try {
       const course = await Course.findById(course_id);

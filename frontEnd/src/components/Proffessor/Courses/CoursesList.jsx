@@ -19,7 +19,7 @@ export default function InteractiveList() {
   }, [coursesData]);
 
   function onClickDeleteItem(id) {
-    deleteItem(id, "course").then((message) => {
+    deleteItem(id, "courses").then((message) => {
       console.log(message);
       coursesDispatch(deleteItem_Action(id));
     });
