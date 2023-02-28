@@ -8,9 +8,10 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { CourseContext } from "Context/courseContext";
-import { IconButton, ListItem } from "@mui/material";
+import { IconButton, ListItem, Typography } from "@mui/material";
 import { editCourseStudentList } from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
+import ClassesList from "../addClasses/classesList/classesList";
 
 export default function NestedList() {
   const { courseData, courseDispatch } = React.useContext(CourseContext);
@@ -29,35 +30,47 @@ export default function NestedList() {
   }
 
   return (
-    <List
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Students on this course:{" "}
-          <span style={{ color: "red", fontSize: "bigger" }}>
-            {" "}
-            {courseData.students.length}
-          </span>
-        </ListSubheader>
-      }
-    >
-      <ListItemButton onClick={handleClick}>
-        <ListItemText primary="Students" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {courseData.students !== undefined
-            ? courseData.students.map((listItem, i) => {
-                return (
-                  <ListItem
-                    key={i}
-                    className="on-hover flex-half"
-                    style={{ width: "100%" }}
-                    secondaryAction={
+    <div>
+      <Typography variant="h5" sx={{ textAlign: "center" }}>
+        Participants
+      </Typography>
+      <List
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Students on this course:{" "}
+            <span style={{ color: "red", fontSize: "bigger" }}>
+              {" "}
+              {courseData.students.length}
+            </span>
+          </ListSubheader>
+        }
+      >
+        <ListItemButton onClick={handleClick}>
+          <ListItemText primary="Students" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {courseData.students !== undefined
+              ? courseData.students.map((listItem, i) => {
+                  return (
+                    <ListItem
+                      key={i}
+                      className="on-hover"
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <ListItemText
+                        primary={listItem.firstName + " " + listItem.lastName}
+                        secondary={listItem.email}
+                      />
                       <IconButton
                         edge="end"
                         aria-label="delete"
@@ -67,18 +80,13 @@ export default function NestedList() {
                       >
                         <PersonRemoveIcon />
                       </IconButton>
-                    }
-                  >
-                    <ListItemText
-                      primary={listItem.firstName + " " + listItem.lastName}
-                      secondary={listItem.email}
-                    />
-                  </ListItem>
-                );
-              })
-            : "no participants"}
-        </List>
-      </Collapse>
-    </List>
+                    </ListItem>
+                  );
+                })
+              : "no participants"}
+          </List>
+        </Collapse>
+      </List>
+    </div>
   );
 }

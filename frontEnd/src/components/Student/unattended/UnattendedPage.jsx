@@ -6,7 +6,11 @@ import {
   createTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getUnattendedClasses, submitUnAttendanceReason } from "server/student";
+import {
+  getUnattendedClasses,
+  markAttended,
+  submitUnAttendanceReason,
+} from "server/student";
 import { getSimpleTime } from "utils/dates";
 import { getSimpleDate } from "../../../utils/dates";
 
@@ -28,6 +32,14 @@ export default function UnattendedPage() {
 
   function onSubmitUpdateReason(attendanceId, reason, i) {
     submitUnAttendanceReason(attendanceId, reason).then((data) => {
+      if (!data) return;
+      let copy = [...unAttendedClasses];
+      copy.splice(i, 1);
+      setUnattendedClasses([...copy]);
+    });
+  }
+  function onClickMarkAttendance(attendanceId, i) {
+    markAttended(attendanceId).then((data) => {
       if (!data) return;
       let copy = [...unAttendedClasses];
       copy.splice(i, 1);
@@ -94,6 +106,16 @@ export default function UnattendedPage() {
                   />
                   <Button variant="contained" color="primary" type="submit">
                     Submit Reason
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={() => {
+                      onClickMarkAttendance(classExpectingReason._id, i);
+                    }}
+                  >
+                    Mark as Attended
                   </Button>
                 </FormControl>
               </form>

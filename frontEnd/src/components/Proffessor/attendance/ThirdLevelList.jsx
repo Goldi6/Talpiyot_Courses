@@ -52,7 +52,7 @@ export default function ThirdLevelCollapse({ attendees, absentees }) {
 
   return (
     <>
-      <List component="dl" disablePadding style={{ marginLeft: "3rem" }}>
+      <List component="dl" disablePadding style={{ marginLeft: "1rem" }}>
         <ListItem button>
           <ListItemText
             style={studentDataStyle}

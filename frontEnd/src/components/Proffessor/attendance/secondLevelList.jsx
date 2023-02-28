@@ -35,7 +35,7 @@ export default function SecondLevelCollapse({ classesData }) {
                   if (passed) handleClick(levelTwo_identifier + i);
                 }}
                 style={{
-                  padding: "0 3rem",
+                  padding: "0 1rem",
                   background: "#e3f2fd",
                   borderBottom: "3px solid #555",
                 }}
@@ -60,16 +60,18 @@ export default function SecondLevelCollapse({ classesData }) {
                   }}
                 />
               </ListItem>
-              <Collapse
-                in={open_2[levelTwo_identifier + i]}
-                timeout="auto"
-                unmountOnExit
-              >
-                <ThirdLevelCollapse
-                  attendees={attendees}
-                  absentees={absentees}
-                />
-              </Collapse>
+              {passed && (
+                <Collapse
+                  in={open_2[levelTwo_identifier + i]}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <ThirdLevelCollapse
+                    attendees={attendees}
+                    absentees={absentees}
+                  />
+                </Collapse>
+              )}
             </>
           );
         })}

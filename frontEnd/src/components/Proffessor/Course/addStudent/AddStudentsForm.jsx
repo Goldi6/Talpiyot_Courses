@@ -13,6 +13,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { CourseContext } from "Context/courseContext";
 import { editCourseStudentList, getList } from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
+import NestedList from "./ActiveStudentsList";
 
 export default function AddStudentsForm() {
   const { courseData, courseDispatch } = useContext(CourseContext);
@@ -62,7 +63,9 @@ export default function AddStudentsForm() {
   }
 
   return (
-    <div>
+    <div className="flex-book">
+      <NestedList />
+
       <form>
         <Stack spacing={2}>
           <Typography variant="h5" sx={{ textAlign: "center" }}>

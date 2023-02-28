@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 const verifyProfessor = require("../middleware/verifyProfessor");
 const Schedule = require("../models/scheduleModel");
 const Attendant = require("../models/attendantsModel");
+const lodash = require("lodash");
 
 //
 //
@@ -16,7 +17,34 @@ const router = new express.Router();
 
 //#endregion
 
-//TODO: Add a route to create a new user
+router.post(
+  "/professor/attendance/:courseId",
+  auth,
+  verifyProfessor,
+  async (req, res, next) => {
+    const courseId = req.params.courseId;
+
+    const { classes } = req.body;
+
+    try {
+      const passSchedulePromises = classes.map(async (classId) => {
+        const data = await Attendant.find({
+          courseId,
+          class: classId,
+        })
+          .select("-courseId -class -createdAt -updatedAt -date")
+          .populate({ path: "student", select: "firstName lastName email" });
+        return { classId, data };
+      });
+
+      const schedules = await Promise.all(passSchedulePromises);
+
+      res.send(schedules);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get(
   "/professor/attendance",
@@ -117,7 +145,6 @@ router.get(
         classObj.absentees = unattended;
         delete classObj.docs;
       }
-      console.log("ATTENDANTS");
       const sorted = doc.classes.sort((a, b) => {
         const dateA = new Date(a.startTimeStamp);
         const dateB = new Date(b.startTimeStamp);

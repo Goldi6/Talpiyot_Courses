@@ -5,7 +5,6 @@ import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
 
 export const getAttendanceData = async () => {
-  //  console.log("GETTER" + type_path);
   try {
     const req = await axios.get(`${path}/professor/attendance`, {
       headers: AUTH_Header(getTokenFromCookie()),
@@ -14,6 +13,24 @@ export const getAttendanceData = async () => {
     //    console.log(req.data);
     return req.data;
   } catch (error) {
-    console.log(error);
+    passErrorMessage(error);
+  }
+};
+
+export const GetClassAttendance = async (courseId, scheduleIds) => {
+  if (scheduleIds.length === 0) return [];
+  try {
+    const req = await axios.post(
+      `${path}/professor/attendance/${courseId}`,
+      { classes: scheduleIds },
+      {
+        headers: AUTH_Header(getTokenFromCookie()),
+      }
+    );
+
+    //    console.log(req.data);
+    return req.data;
+  } catch (error) {
+    passErrorMessage(error);
   }
 };

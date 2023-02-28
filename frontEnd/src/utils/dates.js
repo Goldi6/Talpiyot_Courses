@@ -53,3 +53,11 @@ export function getDateAndTimesFromMUI(
 
   return { date, startTime, endTime };
 }
+export const simpleDateToDate = function (date) {
+  const dateArray = date.split("/");
+  const day = dateArray[0];
+  const month = dateArray[1];
+  const year = dateArray[2];
+
+  return new Date(year, month - 1, day);
+};

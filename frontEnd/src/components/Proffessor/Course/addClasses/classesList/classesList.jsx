@@ -6,11 +6,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { CourseContext } from "Context/courseContext";
 import { IconButton, ListItem } from "@mui/material";
-import { deleteClassFromCourse, editCourseStudentList } from "server/db";
+import { deleteClassFromCourse } from "server/db";
 import { getSimpleDate } from "../../../../../utils/dates";
 import { getSimpleTime } from "utils/dates";
 import { updateClassesInCourse } from "Reducers/Actions/CourseAction";
@@ -60,19 +59,13 @@ export default function ClassesList() {
                 return (
                   <ListItem
                     key={i}
-                    className="on-hover flex-half"
-                    style={{ width: "100%" }}
-                    secondaryAction={
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => {
-                          onClickDeleteItem(listItem._id);
-                        }}
-                      >
-                        <DeleteForeverIcon />
-                      </IconButton>
-                    }
+                    className="on-hover"
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                    }}
                   >
                     <ListItemText
                       primary={getSimpleDate(listItem.date)}
@@ -82,6 +75,15 @@ export default function ClassesList() {
                         getSimpleTime(listItem.endTime)
                       }
                     />
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => {
+                        onClickDeleteItem(listItem._id);
+                      }}
+                    >
+                      <DeleteForeverIcon />
+                    </IconButton>
                   </ListItem>
                 );
               })
