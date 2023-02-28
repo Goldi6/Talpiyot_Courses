@@ -9,7 +9,7 @@ function getSimpleDate(date) {
 function isNowBetweenTimes(start, end) {
   start = new Date(start).getTime();
   end = new Date(end).getTime();
-  now = new Date().getTime();
+  const now = new Date().getTime();
   return start < now && end > now;
 }
 

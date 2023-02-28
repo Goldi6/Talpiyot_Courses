@@ -11,7 +11,7 @@ const studentRouter = require("./studentRouter");
 const helperRouters = require("./helperRouter");
 const attendanceRouter = require("./attendanceRouter");
 
-const router = new express.Router();
+const router = express.Router();
 
 router.use(authRouter);
 router.use(coursesRouter);
