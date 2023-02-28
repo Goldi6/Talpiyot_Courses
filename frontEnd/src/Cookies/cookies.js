@@ -3,8 +3,6 @@ import Cookies from "js-cookie";
 const USER_DATA = "user_data";
 
 export const saveUserOnCookie = (userData) => {
-  console.log("cookue:");
-
   const jsonUserData = JSON.stringify(userData);
   Cookies.set(USER_DATA, jsonUserData, {
     expires: 12,

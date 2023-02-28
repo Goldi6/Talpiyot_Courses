@@ -11,10 +11,9 @@ export const getList = async (type_path) => {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
-    //    console.log(req.data);
     return req.data;
   } catch (error) {
-    console.log(error);
+    passErrorMessage(error);
   }
 };
 
@@ -25,10 +24,8 @@ export const createCourse = async (courseData) => {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
-    console.log(req.data);
     return req.data;
   } catch (error) {
-    console.log(error);
     passErrorMessage(error);
   }
 };
@@ -132,7 +129,6 @@ export const updateCourseSchedule = async (
 ) => {
   // "addClass / removeClass"
 
-  console.log(courseId);
   try {
     const router_path = `${path}/course/${action}/${courseId}`;
 

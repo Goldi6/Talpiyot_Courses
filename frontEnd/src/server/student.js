@@ -11,8 +11,7 @@ export async function getStudentCurses() {
     });
     return req.data;
   } catch (error) {
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
   }
 }
 export async function getStudentSchedule() {
@@ -22,8 +21,7 @@ export async function getStudentSchedule() {
     });
     return req.data;
   } catch (error) {
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
   }
 }
 export async function getNextClass() {
@@ -34,8 +32,7 @@ export async function getNextClass() {
     console.log(req.data);
     return req.data;
   } catch (error) {
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
   }
 }
 //
@@ -51,9 +48,22 @@ export async function attendStudent(scheduleID, attendanceID) {
     );
     return req.data;
   } catch (error) {
-    console.log(error);
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
+  }
+}
+
+export async function markAttended(attendanceId) {
+  try {
+    const req = await axios.patch(
+      `${path}/student/attend/${attendanceId}`,
+      {},
+      {
+        headers: AUTH_Header(getTokenFromCookie()),
+      }
+    );
+    return req.data;
+  } catch (error) {
+    passErrorMessage(error);
   }
 }
 
@@ -68,8 +78,7 @@ export async function submitUnAttendanceReason(attendanceID, reason) {
     );
     return req.data;
   } catch (error) {
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
   }
 }
 
@@ -80,8 +89,6 @@ export async function getUnattendedClasses() {
     });
     return req.data;
   } catch (error) {
-    console.log(error);
-    console.log(error.response);
-    passErrorMessage(error.response);
+    passErrorMessage(error);
   }
 }
