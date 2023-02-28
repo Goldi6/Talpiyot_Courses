@@ -91,6 +91,23 @@ router.patch(
   }
 );
 
+router.patch("/student/attend/:attendanceId", auth, async (req, res, next) => {
+  try {
+    const attendDoc = await Attendant.findById(req.params.attendanceId);
+    if (!attendDoc) return next(attendDoc);
+
+    if (attendDoc.attended) return res.send({ attended: true });
+
+    attendDoc.attended = true;
+    attendDoc.timeAttended = new Date();
+    attendDoc.save();
+    return res.send({ attended: attendDoc.attended });
+    res.send({ attended: false });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/student/courses", auth, async (req, res, next) => {
   try {
     //find the course that on click redirects to get course date details page
