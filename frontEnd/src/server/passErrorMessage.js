@@ -1,7 +1,17 @@
+import { deleteUserFromCookie } from "Cookies/cookies";
+
 export default function passErrorMessage(err) {
-  console.log(err);
+  const errResponse = err.response;
+  const responseData = errResponse.data;
+  console.log(errResponse);
+  //TODO handle errors
+
+  if (responseData === "TokenExpired") {
+    deleteUserFromCookie();
+    return;
+  }
   //console.log(err.data);
-  if (err.data.name) {
+  if (errResponse.name) {
     throw new Error(err.data.name);
   }
   if (err.code === "ERR_NETWORK") {

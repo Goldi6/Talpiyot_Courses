@@ -46,8 +46,22 @@ const clientErrorHandler = (err, req, res, next) => {
 
   switch (err.name) {
     case "UserNotFound":
-      const error = new CustomError("user not found", "UserNotFound", 404);
-      return res.status(404).send(error);
+      return res.status(404).send(
+        new CustomError({
+          message: "user not found",
+          name: "UserNotFound",
+          status: 404,
+        })
+      );
+    case "CastError":
+      // return res.status(400).send(
+      //   new CustomError({
+      //     message: "Bad request. Course doesn't exists",
+      //     name: "CastError",
+      //     status: 400,
+      //   })
+      // );
+      return res.status(400).send("Bar request, Course not found");
   }
 
   ///
@@ -141,12 +155,14 @@ const clientErrorHandler = (err, req, res, next) => {
   //   clientError = new AuthError("user is not Logged In");
   // }
 
-  // if (err instanceof jwt.TokenExpiredError) {
-  //   clientError = new AuthError("Expired Token, please log in.");
-  // }
-  // if (err instanceof jwt.JsonWebTokenError) {
-  //   clientError = new AuthError("Invalid Token, try to log in.");
-  // }
+  if (err instanceof jwt.TokenExpiredError) {
+    console.log("TTT");
+    return res.status(400).send("TokenExpired");
+  }
+  if (err instanceof jwt.JsonWebTokenError) {
+    console.log("TTT");
+    return res.status(400).send("TokenExpired");
+  }
 
   // if (clientError instanceof AuthError) {
   //   console.log("Auth Error");
