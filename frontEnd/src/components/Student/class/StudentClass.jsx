@@ -1,6 +1,6 @@
 import { UserContext } from "Context/userContext";
 import React, { useContext, useEffect } from "react";
-import { attendStudent, getNextClass } from "server/student";
+import { attendOnTime, getNextClassForUser } from "server/profile";
 import { getSimpleDate, getSimpleTime, isNowBetweenTimes } from "utils/dates";
 import { Button } from "@mui/material";
 
@@ -13,14 +13,14 @@ export default function StudentClass() {
   setInterval(() => setNow(new Date()), 60000);
   useEffect(() => {
     let render = true;
-    if (render) getNextClass().then((data) => setSchedule(data));
+    if (render) getNextClassForUser().then((data) => setSchedule(data));
     return () => {
       render = false;
     };
   }, []);
 
   function onClickAttend(classId, attendanceId) {
-    attendStudent(classId, attendanceId).then((data) => {
+    attendOnTime(classId, attendanceId).then((data) => {
       if (data.attended) {
         const updatedSchedule = schedule.map((attendance) => {
           if (attendance.id === attendanceId) {

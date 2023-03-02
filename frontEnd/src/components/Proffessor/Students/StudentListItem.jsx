@@ -8,7 +8,7 @@ import { StudentsContext } from "Context/StudentsContext";
 export default function StudentListItem({ listItem }) {
   const { studentsDispatch } = useContext(StudentsContext);
   function onClickDeleteItem(id) {
-    deleteItem(id, "user").then((message) => {
+    deleteItem(id, "users").then((message) => {
       console.log(message);
       studentsDispatch(deleteItem_Action(id));
     });

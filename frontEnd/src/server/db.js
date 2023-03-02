@@ -16,10 +16,23 @@ export const getList = async (type_path) => {
     passErrorMessage(error);
   }
 };
+export const getCourses = async () => {
+  console.log("getters");
 
-export const createCourse = async (courseData) => {
   try {
-    const req = await axios.post(`${path}/courses`, courseData, {
+    const req = await axios.get(`${path}/courses`, {
+      headers: AUTH_Header(getTokenFromCookie()),
+    });
+
+    return req.data;
+  } catch (error) {
+    passErrorMessage(error);
+  }
+};
+export const getStudents = async () => {
+  //  console.log("GETTER" + type_path);
+  try {
+    const req = await axios.get(`${path}/users/students`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
@@ -41,9 +54,22 @@ export const deleteItem = async (id, from_path) => {
   }
 };
 
-export const getCourse = async (id) => {
+export const createCourse = async (courseData) => {
   try {
-    const req = await axios.get(`${path}/courses/${id}`, {
+    const req = await axios.post(`${path}/courses`, courseData, {
+      headers: AUTH_Header(getTokenFromCookie()),
+    });
+
+    return req.data;
+  } catch (error) {
+    passErrorMessage(error);
+  }
+};
+
+export const getCourse = async (id) => {
+  const reqPath = `${path}/courses/${id}`;
+  try {
+    const req = await axios.get(reqPath, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 

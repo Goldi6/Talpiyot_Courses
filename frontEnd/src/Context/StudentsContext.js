@@ -3,12 +3,10 @@ import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 ///////////////////////////////
 import { UserContext } from "./userContext";
-import { getList as getStudents } from "../server/db";
+import { getStudents } from "../server/db";
 import arrayOfDataObjectsReducer, {
   initItemList_Action,
 } from "Reducers/CoursesReducer";
-
-const type = "students";
 
 export const StudentsContext = createContext(null);
 
@@ -19,7 +17,7 @@ export default function StudentsContextProvider(props) {
 
   useEffect(() => {
     let isComponentExists = true;
-    getStudents(type)
+    getStudents()
       .then((dataList) => {
         if (isComponentExists) listDispatch(initItemList_Action(dataList));
       })

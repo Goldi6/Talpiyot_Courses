@@ -1,42 +1,38 @@
+const User = require("../models/userModel");
+
 // //TODO
 const { isNowBetweenTimes } = require("../utils/dates");
 
-// // router.patch("schedule/:id/:student", auth, async (req, res, next) => {
-// //   try {
-// //     //if time update else reason update
-// //   } catch (error) {
-// //     next(error);
-// //   }
-// // });
-
 const express = require("express");
-const auth = require("../middleware/auth");
 const Schedule = require("../models/scheduleModel");
 const Attendant = require("../models/attendantsModel");
 
 const router = express.Router();
 
 //TEST
-router.patch("/student/attendance/reason/:id", auth, async (req, res, next) => {
-  const _id = req.params.id;
-  const reason = req.body.reason;
-  try {
-    const attendant = await Attendant.findById(_id);
-    if (!attendant) next(new Error("Attendant not found"));
-    if (!attendant.attended) {
-      attendant.reason = reason;
-      attendant.timeAttended = new Date();
-      await attendant.save();
+router.post(
+  "/attendance/:attendanceId/absenceReason",
+  async (req, res, next) => {
+    const _id = req.params.attendanceId;
+    const reason = req.body.reason;
+    try {
+      const attendant = await Attendant.findById(_id);
+      if (!attendant) next(new Error("Attendant not found"));
+      if (!attendant.attended) {
+        attendant.reason = reason;
+        attendant.timeAttended = new Date();
+        await attendant.save();
+      }
+      // await attendant.populate("class");
+      res.send(true);
+    } catch (err) {
+      next(err);
     }
-    // await attendant.populate("class");
-    res.send(true);
-  } catch (err) {
-    next(err);
   }
-});
+);
 
 //TEST //fix error
-router.get("/student/unattended", auth, async (req, res, next) => {
+router.get("/unattendedClasses", async (req, res, next) => {
   try {
     const today = new Date();
 
@@ -65,8 +61,7 @@ router.get("/student/unattended", auth, async (req, res, next) => {
 });
 
 router.patch(
-  "/student/attend/:classId/:attendanceId",
-  auth,
+  "/schedule/:classId/attend/:attendanceId",
   async (req, res, next) => {
     try {
       const schedule = await Schedule.findById(req.params.classId);
@@ -91,7 +86,7 @@ router.patch(
   }
 );
 
-router.patch("/student/attend/:attendanceId", auth, async (req, res, next) => {
+router.patch("/attend/:attendanceId", async (req, res, next) => {
   try {
     const attendDoc = await Attendant.findById(req.params.attendanceId);
     if (!attendDoc) return next(attendDoc);
@@ -102,13 +97,12 @@ router.patch("/student/attend/:attendanceId", auth, async (req, res, next) => {
     attendDoc.timeAttended = new Date();
     attendDoc.save();
     return res.send({ attended: attendDoc.attended });
-    res.send({ attended: false });
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/student/courses", auth, async (req, res, next) => {
+router.get("/courses", async (req, res, next) => {
   try {
     //find the course that on click redirects to get course date details page
     await req.user.populate({
@@ -122,7 +116,7 @@ router.get("/student/courses", auth, async (req, res, next) => {
     next(error);
   }
 });
-router.get("/student/schedule", auth, async (req, res, next) => {
+router.get("/schedule", async (req, res, next) => {
   try {
     const courses = req.user.courses.map((course) => {
       return course.toString();
@@ -138,7 +132,7 @@ router.get("/student/schedule", auth, async (req, res, next) => {
   }
 });
 
-router.get("/class", auth, async (req, res, next) => {
+router.get("/class", async (req, res, next) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const courses = req.user.courses.map((course) => {

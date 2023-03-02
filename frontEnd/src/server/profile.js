@@ -3,10 +3,30 @@ import { path } from "./pathToServer";
 import passErrorMessage from "./passErrorMessage";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
+import { returnUserDataSet } from "utils/userDataSet";
 
-export async function getStudentCurses() {
+export const updateProfile = async (user) => {
   try {
-    const req = await axios.get(`${path}/student/courses`, {
+    const res = await axios.patch(
+      `${path}/my-profile`,
+      { user },
+      {
+        headers: AUTH_Header(getTokenFromCookie()),
+      }
+    );
+    console.log(res.data);
+    return {
+      token: res.data.token,
+      user: returnUserDataSet(res.data),
+    };
+  } catch (err) {
+    passErrorMessage(err);
+  }
+};
+
+export async function getUserCurses() {
+  try {
+    const req = await axios.get(`${path}/my-profile/courses`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
     return req.data;
@@ -14,9 +34,9 @@ export async function getStudentCurses() {
     passErrorMessage(error);
   }
 }
-export async function getStudentSchedule() {
+export async function getUserSchedule() {
   try {
-    const req = await axios.get(`${path}/student/schedule`, {
+    const req = await axios.get(`${path}/my-profile/schedule`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
     return req.data;
@@ -24,9 +44,9 @@ export async function getStudentSchedule() {
     passErrorMessage(error);
   }
 }
-export async function getNextClass() {
+export async function getNextClassForUser() {
   try {
-    const req = await axios.get(`${path}/class`, {
+    const req = await axios.get(`${path}/my-profile/class`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
     console.log(req.data);
@@ -37,10 +57,10 @@ export async function getNextClass() {
 }
 //
 //
-export async function attendStudent(scheduleID, attendanceID) {
+export async function attendOnTime(classID, attendanceID) {
   try {
     const req = await axios.patch(
-      `${path}/student/attend/${scheduleID}/${attendanceID}`,
+      `${path}/my-profile/schedule/${classID}/attend/${attendanceID}`,
       {},
       {
         headers: AUTH_Header(getTokenFromCookie()),
@@ -52,10 +72,10 @@ export async function attendStudent(scheduleID, attendanceID) {
   }
 }
 
-export async function markAttended(attendanceId) {
+export async function markAttendedAfterClassWasOver(attendanceId) {
   try {
     const req = await axios.patch(
-      `${path}/student/attend/${attendanceId}`,
+      `${path}/my-profile/attend/${attendanceId}`,
       {},
       {
         headers: AUTH_Header(getTokenFromCookie()),
@@ -67,10 +87,10 @@ export async function markAttended(attendanceId) {
   }
 }
 
-export async function submitUnAttendanceReason(attendanceID, reason) {
+export async function submitAbsenceReason(attendanceID, reason) {
   try {
-    const req = await axios.patch(
-      `${path}/student/attendance/reason/${attendanceID}`,
+    const req = await axios.post(
+      `${path}/my-profile/attendance/${attendanceID}/absenceReason`,
       { reason },
       {
         headers: AUTH_Header(getTokenFromCookie()),
@@ -84,7 +104,7 @@ export async function submitUnAttendanceReason(attendanceID, reason) {
 
 export async function getUnattendedClasses() {
   try {
-    const req = await axios.get(`${path}/student/unattended`, {
+    const req = await axios.get(`${path}/my-profile/unattendedClasses`, {
       headers: AUTH_Header(getTokenFromCookie()),
     });
     return req.data;

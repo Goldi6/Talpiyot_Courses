@@ -1,5 +1,5 @@
 import React from "react";
-import { getStudentSchedule } from "server/student";
+import { getUserSchedule } from "server/profile";
 import { getSimpleTime, getSimpleDate } from "../../../utils/dates";
 
 export default function StudentSchedule() {
@@ -7,7 +7,7 @@ export default function StudentSchedule() {
 
   React.useEffect(() => {
     let render = true;
-    if (render) getStudentSchedule().then((data) => setSchedule(data));
+    if (render) getUserSchedule().then((data) => setSchedule(data));
     return () => {
       render = false;
     };

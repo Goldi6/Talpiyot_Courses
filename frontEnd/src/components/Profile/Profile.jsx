@@ -11,6 +11,7 @@ import { saveUserOnCookie } from "Cookies/cookies";
 import { userUpdateAccount_Action } from "Reducers/Actions/UserActions";
 import React, { useContext, useState } from "react";
 import { updateUser } from "server/auth";
+import { updateProfile } from "server/profile";
 import { isAtLeastAge } from "utils/calcAge";
 import validator from "validator";
 
@@ -276,7 +277,7 @@ export default function Profile() {
       }
     }
 
-    updateUser(user)
+    updateProfile(user)
       .then((newData) => {
         userDispatch(userUpdateAccount_Action(newData));
         saveUserOnCookie(newData);

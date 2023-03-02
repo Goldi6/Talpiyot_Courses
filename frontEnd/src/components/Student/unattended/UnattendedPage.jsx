@@ -8,9 +8,9 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   getUnattendedClasses,
-  markAttended,
-  submitUnAttendanceReason,
-} from "server/student";
+  markAttendedAfterClassWasOver,
+  submitAbsenceReason,
+} from "server/profile";
 import { getSimpleTime } from "utils/dates";
 import { getSimpleDate } from "../../../utils/dates";
 
@@ -31,7 +31,7 @@ export default function UnattendedPage() {
   }, []);
 
   function onSubmitUpdateReason(attendanceId, reason, i) {
-    submitUnAttendanceReason(attendanceId, reason).then((data) => {
+    submitAbsenceReason(attendanceId, reason).then((data) => {
       if (!data) return;
       let copy = [...unAttendedClasses];
       copy.splice(i, 1);
@@ -39,7 +39,7 @@ export default function UnattendedPage() {
     });
   }
   function onClickMarkAttendance(attendanceId, i) {
-    markAttended(attendanceId).then((data) => {
+    markAttendedAfterClassWasOver(attendanceId).then((data) => {
       if (!data) return;
       let copy = [...unAttendedClasses];
       copy.splice(i, 1);

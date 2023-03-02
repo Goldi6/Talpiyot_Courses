@@ -11,7 +11,12 @@ import {
 import React, { useContext, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { CourseContext } from "Context/courseContext";
-import { addStudentToCourse, editCourseStudentList, getList } from "server/db";
+import {
+  addStudentToCourse,
+  editCourseStudentList,
+  getList,
+  getStudents,
+} from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
 import NestedList from "./ActiveStudentsList";
 
@@ -26,7 +31,7 @@ export default function AddStudentsForm() {
   useEffect(() => {
     let render = true;
     if (render) {
-      getList("students").then((dataList) => {
+      getStudents().then((dataList) => {
         setStudentData([...dataList]);
         console.log(studentData);
         const newList = mapList([...dataList]);

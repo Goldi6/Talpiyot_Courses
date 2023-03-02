@@ -1,5 +1,5 @@
 import React from "react";
-import { getStudentCurses } from "server/student";
+import { getUserCurses } from "server/profile";
 import { getSimpleDate } from "utils/dates";
 
 export default function StudentCourses() {
@@ -7,7 +7,7 @@ export default function StudentCourses() {
 
   React.useEffect(() => {
     let render = true;
-    if (render) getStudentCurses().then((data) => setCourses(data.courses));
+    if (render) getUserCurses().then((data) => setCourses(data.courses));
     return () => {
       render = false;
     };

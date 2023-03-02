@@ -3,24 +3,21 @@
 const express = require("express");
 const User = require("../models/userModel");
 const Course = require("../models/courseModel");
-const auth = require("../middleware/auth");
-const verifyProfessor = require("../middleware/verifyProfessor");
+
 const Schedule = require("../models/scheduleModel");
 const Attendant = require("../models/attendantsModel");
-const lodash = require("lodash");
 
 //
 //
 const { getSimpleDate } = require("../utils/dates");
 
-const router = new express.Router();
+const router = express.Router();
 
 //#endregion
 
 router.post(
-  "/professor/attendance/:courseId",
-  auth,
-  verifyProfessor,
+  "/:courseId",
+
   async (req, res, next) => {
     const courseId = req.params.courseId;
 
@@ -47,9 +44,8 @@ router.post(
 );
 
 router.get(
-  "/professor/attendance",
-  auth,
-  verifyProfessor,
+  "",
+
   async (req, res, next) => {
     //   const attendance = Attendant.aggregate([]);
 

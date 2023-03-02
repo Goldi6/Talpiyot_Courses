@@ -16,7 +16,8 @@ export default function CourseContextProvider(props) {
     let isComponentExists = true;
     getCourse(props.id)
       .then((course) => {
-        if (isComponentExists) courseDispatch(initCourseRoom_Action(course));
+        if (course)
+          if (isComponentExists) courseDispatch(initCourseRoom_Action(course));
       })
       .catch((error) => {
         navigate("/NotFound404", { replace: true, state: { error: error } });
