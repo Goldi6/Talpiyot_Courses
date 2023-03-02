@@ -14,13 +14,9 @@ import { deleteItem_Action } from "Reducers/CoursesReducer";
 
 export default function InteractiveList() {
   const { coursesData, coursesDispatch } = React.useContext(CoursesContext);
-  React.useEffect(() => {
-    console.log(coursesData);
-  }, [coursesData]);
 
   function onClickDeleteItem(id) {
     deleteItem(id, "courses").then((message) => {
-      console.log(message);
       coursesDispatch(deleteItem_Action(id));
     });
   }
@@ -35,14 +31,8 @@ export default function InteractiveList() {
           {coursesData ? (
             coursesData.length > 0 ? (
               coursesData.map((listItem) => {
-                // const dates =
-                //   getSimpleDate(course.startDate) +
-                //   " - " +
-                //   getSimpleDate(course.endDate);
-
                 const dates = listItem.startDate + " - " + listItem.endDate;
 
-                //console.log(course._id);
                 return (
                   <ListItem
                     key={listItem.name}
