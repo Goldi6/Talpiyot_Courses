@@ -1,9 +1,10 @@
 import axios from "axios";
-import { path } from "./pathToServer";
 import passErrorMessage from "./passErrorMessage";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
 import { returnUserDataSet } from "utils/userDataSet";
+
+const path = process.env.REACT_APP_PATH;
 
 export const updateProfile = async (user) => {
   try {

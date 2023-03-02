@@ -1,8 +1,9 @@
 import axios from "axios";
-import { path } from "./pathToServer";
 import passErrorMessage from "./passErrorMessage";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
+
+const path = process.env.REACT_APP_PATH;
 
 export const getList = async (type_path) => {
   //  console.log("GETTER" + type_path);
