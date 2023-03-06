@@ -27,7 +27,16 @@ router.use(authRouter);
 router.use("/users", authUser, usersRouter);
 router.use("/my-profile", authUser, profileRouter);
 
-router.use("/courses/courseId", authUser, verifyProfessor, courseActionsRouter);
+router.use(
+  "/courses/:courseId",
+  authUser,
+  verifyProfessor,
+  (req, res, next) => {
+    req.courseId = req.params.courseId;
+    next();
+  },
+  courseActionsRouter
+);
 router.use("/courses", authUser, coursesRouter);
 
 router.use("/attendance", authUser, verifyProfessor, attendanceRouter);

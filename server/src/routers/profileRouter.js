@@ -1,168 +1,26 @@
-const User = require("../models/userModel");
-
-// //TODO
-const { isNowBetweenTimes } = require("../utils/dates");
-
 const express = require("express");
-const Schedule = require("../models/scheduleModel");
-const Attendant = require("../models/attendantsModel");
 
 const router = express.Router();
-
-//TEST
-router.post(
-  "/attendance/:attendanceId/absenceReason",
-  async (req, res, next) => {
-    const _id = req.params.attendanceId;
-    const reason = req.body.reason;
-    try {
-      const attendant = await Attendant.findById(_id);
-      if (!attendant) next(new Error("Attendant not found"));
-      if (!attendant.attended) {
-        attendant.reason = reason;
-        attendant.timeAttended = new Date();
-        await attendant.save();
-      }
-      // await attendant.populate("class");
-      res.send(true);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
-//TEST //fix error
-router.get("/unattendedClasses", async (req, res, next) => {
-  try {
-    const today = new Date();
-
-    const query = {
-      $and: [
-        { attended: false },
-        { date: { $lt: today } },
-        { student: req.user._id },
-        { reason: { $exists: false, $not: { $type: "null" } } },
-      ],
-    };
-
-    const unattended = await Attendant.find(query).populate({
-      path: "class",
-      options: { virtuals: false },
-    });
-
-    if (!unattended) return next(unattended);
-
-    if (unattended.length === 0) return res.send("AllClassesAttended");
-
-    res.send(unattended);
-  } catch (error) {
-    next(error);
-  }
-});
+const profileController = require("../controllers/profileController");
 
 router.patch(
   "/schedule/:classId/attend/:attendanceId",
-  async (req, res, next) => {
-    try {
-      const schedule = await Schedule.findById(req.params.classId);
-      //if time update else reason update
-      if (isNowBetweenTimes(schedule.startTime, schedule.endTime)) {
-        console.log("IN time");
-
-        const attendDoc = await Attendant.findById(req.params.attendanceId);
-        if (!attendDoc) return next(attendDoc);
-
-        if (attendDoc.attended) return res.send({ attended: true });
-
-        attendDoc.attended = true;
-        attendDoc.timeAttended = new Date();
-        attendDoc.save();
-        return res.send({ attended: attendDoc.attended });
-      }
-      res.send({ attended: false });
-    } catch (error) {
-      next(error);
-    }
-  }
+  profileController.attendOnTime
 );
 
-router.patch("/attend/:attendanceId", async (req, res, next) => {
-  try {
-    const attendDoc = await Attendant.findById(req.params.attendanceId);
-    if (!attendDoc) return next(attendDoc);
+router.patch("/attend/:attendanceId", profileController.attendAfterTime);
 
-    if (attendDoc.attended) return res.send({ attended: true });
+router.get("/courses", profileController.getUserCourses);
 
-    attendDoc.attended = true;
-    attendDoc.timeAttended = new Date();
-    attendDoc.save();
-    return res.send({ attended: attendDoc.attended });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/schedule", profileController.getUserSchedule);
 
-router.get("/courses", async (req, res, next) => {
-  try {
-    //find the course that on click redirects to get course date details page
-    await req.user.populate({
-      path: "courses",
-      populate: { path: "schedule", model: "Schedule" },
-    });
+router.get("/class", profileController.getTodaysClassesForUser);
 
-    console.log(req.user);
-    res.send(req.user);
-  } catch (error) {
-    next(error);
-  }
-});
-router.get("/schedule", async (req, res, next) => {
-  try {
-    const courses = req.user.courses.map((course) => {
-      return course.toString();
-    });
+router.get("/unattendedClasses", profileController.getAllUnattendedClasses);
 
-    const schedule = await Schedule.find({
-      courseId: { $in: courses },
-    }).sort({ startTime: 1 });
-
-    res.send(schedule);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/class", async (req, res, next) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const courses = req.user.courses.map((course) => {
-    return course.toString();
-  });
-
-  const todaysClassQuery = {
-    $and: [{ courseId: { $in: courses } }, { date: today }],
-  };
-
-  const schedule = await Schedule.find(todaysClassQuery).sort({ startTime: 1 });
-  const ready = false;
-
-  const getAttendanceSchedulePromises = schedule.map(async (classSchedule) => {
-    const attendDoc = await Attendant.findOne({
-      class: classSchedule,
-      student: req.user._id,
-    }).populate("class");
-
-    return attendDoc;
-  });
-
-  const attendanceSchedule = await Promise.all(getAttendanceSchedulePromises);
-  // const updatedSchedule = schedule.map(async (scheduledClass) => {
-  //   const attendance = scheduledClass.getStudentAttendance(req.user._id);
-
-  //   console.log(attendance);
-  //   return attendance;
-  // });
-  res.send(attendanceSchedule);
-});
+router.post(
+  "/attendance/:attendanceId/absenceReason",
+  profileController.postAbsenceReason
+);
 
 module.exports = router;

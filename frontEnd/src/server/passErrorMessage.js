@@ -18,7 +18,8 @@ export default function passErrorMessage(err) {
     throw new Error("ERR_NETWORK");
   } else {
     if (err.response && err.response.status === 400) {
-      throw new Error(err.response.data.error.message);
+      // throw new Error(err.response.data.error.message);
     }
   }
+  window.location.assign("/NotFound404");
 }

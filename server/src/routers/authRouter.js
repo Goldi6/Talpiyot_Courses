@@ -1,35 +1,12 @@
 const express = require("express");
-const User = require("../models/userModel");
 
 const router = express.Router();
 const authUser = require("../middleware/auth");
+const authController = require("../controllers/authController");
 
-router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findUserByEmailAndPassword(email, password);
-    if (!user) {
-      return next(user);
-    }
-    const token = await user.generateAuthToken();
-    res.send({ user, token });
-  } catch (err) {
-    next(err);
-  }
-});
+router.post("/login", authController.login);
 
-router.get("/logout", authUser, async (req, res, next) => {
-  if (req.user.token === "") return next("NoToken");
-  req.user.token = "";
-
-  try {
-    await req.user.save();
-
-    res.send("user logged out");
-  } catch (err) {
-    next(err);
-  }
-});
+router.get("/logout", authUser, authController.logout);
 
 //TODO check real auth systems
 // router.get("/updateToken", auth, async (req, res, next) => {
