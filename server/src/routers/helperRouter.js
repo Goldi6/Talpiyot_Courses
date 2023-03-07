@@ -1,14 +1,14 @@
 const express = require("express");
 const Course = require("../models/courseModel");
 const auth = require("../middleware/auth");
-const { verifyRequestFields } = require("../middleware/modelFieldsVarifiers");
+const { verifyRequestFields } = require("../middleware/modelFieldsVerifiers");
 const verifyProfessor = require("../middleware/verifyProfessor");
 const Schedule = require("../models/scheduleModel");
 const User = require("../models/userModel");
 const CustomError = require("../utils/customError");
 const Attendant = require("../models/attendantsModel");
 
-const router = new express.Router();
+const router = express.Router();
 async function createAttendances(courses) {
   if (courses.length === 0) {
     // Base case: if there are no more courses to process, return
@@ -20,7 +20,7 @@ async function createAttendances(courses) {
   const schedule = course.schedule;
 
   if (students.length === 0 && schedule.length === 0) {
-    return res.send("no schedule or students");
+    return;
   }
 
   for (let student of students) {
