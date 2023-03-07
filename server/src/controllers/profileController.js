@@ -1,5 +1,3 @@
-const User = require("../models/userModel");
-
 const { isNowBetweenTimes } = require("../utils/dates");
 
 const Schedule = require("../models/scheduleModel");
@@ -16,7 +14,6 @@ exports.postAbsenceReason = async (req, res, next) => {
       attendant.timeAttended = new Date();
       await attendant.save();
     }
-    // await attendant.populate("class");
     res.send(true);
   } catch (err) {
     next(err);
@@ -103,13 +100,15 @@ exports.getUserSchedule = async (req, res, next) => {
 
 exports.getUserCourses = async (req, res, next) => {
   try {
-    //find the course that on click redirects to get course date details page
     await req.user.populate({
       path: "courses",
-      populate: { path: "schedule", model: "Schedule" },
+      populate: {
+        path: "schedule",
+        model: "Schedule",
+        select: "date startTime endTime",
+      },
     });
 
-    console.log(req.user);
     res.send(req.user);
   } catch (error) {
     next(error);
@@ -119,7 +118,6 @@ exports.getUserCourses = async (req, res, next) => {
 exports.attendOnTime = async (req, res, next) => {
   try {
     const schedule = await Schedule.findById(req.params.classId);
-    //if time update else reason update
     if (isNowBetweenTimes(schedule.startTime, schedule.endTime)) {
       console.log("IN time");
 
