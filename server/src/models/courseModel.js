@@ -8,10 +8,12 @@ const courseSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
-
+    professor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     startDate: {
       type: Date,
-      //min: Date.now,
     },
     endDate: {
       type: Date,
@@ -28,18 +30,6 @@ const courseSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    // students: [
-    //   {
-    //     id: {
-    //       type: String,
-    //     },
-    //     name: {
-    //       type: String,
-    //     },
-    //     email: {
-    //       type: String,
-    //     },
-    //   },]
   },
   {
     timestamps: true,
@@ -51,14 +41,11 @@ const courseSchema = new mongoose.Schema(
     },
   }
 );
-
+//?
 courseSchema.methods.toJSON = function () {
   const course = this;
 
   const courseObj = course.toObject();
-  // if (courseObj.schedule.length > 0)
-  //   courseObj.schedule = courseObj.schedule.map((date) => date._id);
-  // else courseObj.schedule = [];
 
   courseObj.startDate = getSimpleDate(courseObj.startDate);
   courseObj.endDate = getSimpleDate(courseObj.endDate);

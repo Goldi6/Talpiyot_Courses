@@ -4,27 +4,26 @@ const verifyProfessor = require("../middleware/verifyProfessor");
 
 const router = express.Router();
 const usersController = require("../controllers/usersController");
+const { verifyRequestFields } = require("../middleware/modelFieldsVerifiers");
 
-const FILTERS = ["token", "courses"];
-//TODO: verifyRequestFields on post(User, FILTERS),
+const FILTERS = ["token", "courses", "firstAccess"];
 
 //TODO patch users/:id
 router.get("/students", verifyProfessor, usersController.getStudents);
 
-router.post("", verifyProfessor, usersController.createUser);
+router.post(
+  "",
+  verifyProfessor,
+  verifyRequestFields(User, [...FILTERS, "birthday"]),
+  usersController.createUser
+);
 
 router.delete("/:id", verifyProfessor, usersController.deleteUser);
 
-///
-//any user can do:
-///
-//#region any
-
 router.patch(
   "",
-  // verifyRequestFields(User, FILTERS),
+  verifyRequestFields(User, [...FILTERS]),
   usersController.updateProfile
 );
-//#endregion
 
 module.exports = router;

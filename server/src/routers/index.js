@@ -21,7 +21,6 @@ const verifyProfessor = require("../middleware/verifyProfessor");
 
 const router = express.Router();
 
-// TODO add prefix to all routes
 router.use(helperRouters);
 router.use(authRouter);
 router.use("/users", authUser, usersRouter);

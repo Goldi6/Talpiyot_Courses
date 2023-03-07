@@ -1,16 +1,16 @@
 import axios from "axios";
-import passErrorMessage from "./passErrorMessage";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
 import { returnUserDataSet } from "utils/userDataSet";
+import passErrorMessage from "errorHandlers/passErrorMessage";
 
 const path = process.env.REACT_APP_PATH;
 
 export const updateProfile = async (user) => {
   try {
     const res = await axios.patch(
-      `${path}/my-profile`,
-      { user },
+      `${path}/users`,
+      { ...user },
       {
         headers: AUTH_Header(getTokenFromCookie()),
       }
