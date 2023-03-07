@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { getUserCurses } from "server/profile";
 import { getSimpleDate } from "utils/dates";
@@ -15,6 +16,12 @@ export default function StudentCourses() {
 
   return (
     <div>
+      <Typography variant="h3" style={{ textAlign: "center" }}>
+        Courses{" "}
+        <Typography color="primary">
+          You have <b>{courses.length}</b> courses
+        </Typography>
+      </Typography>
       {courses.length > 0 &&
         courses.map((course, i) => {
           return (
