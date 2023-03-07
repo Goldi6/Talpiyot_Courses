@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { attendOnTime, getNextClassForUser } from "server/profile";
-import { getSimpleDate, getSimpleTime, isNowBetweenTimes } from "utils/dates";
+import { getSimpleDate, isNowBetweenTimes } from "utils/dates";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -28,11 +28,11 @@ export default function StudentClass() {
   function onClickAttend(classId, attendanceId) {
     attendOnTime(classId, attendanceId).then((data) => {
       if (data.attended) {
-        const updatedSchedule = schedule.map((attendance) => {
-          if (attendance.id === attendanceId) {
-            attendance.attended = data.attended;
+        const updatedSchedule = schedule.map((classNow) => {
+          if (classNow.attendanceId === attendanceId) {
+            classNow.attended = data.attended;
           }
-          return attendance;
+          return classNow;
         });
         setSchedule([...updatedSchedule]);
       }
