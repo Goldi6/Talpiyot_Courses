@@ -21,5 +21,5 @@ export default function passErrorMessage(err) {
       // throw new Error(err.response.data.error.message);
     }
   }
-  window.location.assign("/NotFound404");
+  //window.location.assign("/NotFound404");
 }

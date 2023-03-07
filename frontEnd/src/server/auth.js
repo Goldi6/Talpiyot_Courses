@@ -1,9 +1,10 @@
 import Axios from "axios";
 
 import { getTokenFromCookie } from "../Cookies/cookies";
-import passErrorMessage from "./passErrorMessage";
 import { AUTH_Header } from "./headers";
 import { returnUserDataSet } from "utils/userDataSet";
+import authErrorHandler from "errorHandlers/authErrors";
+import passErrorMessage from "errorHandlers/passErrorMessage";
 const path = process.env.REACT_APP_PATH;
 
 ////////
@@ -15,17 +16,21 @@ export const createUser = async ({
   role,
 }) => {
   try {
-    const res = await Axios.post(`${path}/users`, {
-      firstName,
-      lastName,
-      email,
-      password,
-      role,
-    });
+    const res = await Axios.post(
+      `${path}/users`,
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+      },
+      { headers: AUTH_Header(getTokenFromCookie()) }
+    );
 
     return { ...returnUserDataSet(res.data) };
   } catch (err) {
-    passErrorMessage(err);
+    authErrorHandler(err);
   }
 };
 export const login = async (email, password) => {
@@ -40,7 +45,7 @@ export const login = async (email, password) => {
       user: returnUserDataSet(res.data.user),
     };
   } catch (err) {
-    passErrorMessage(err);
+    authErrorHandler(err);
   }
 };
 

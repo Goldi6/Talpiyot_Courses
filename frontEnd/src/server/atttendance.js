@@ -1,7 +1,7 @@
 import axios from "axios";
-import passErrorMessage from "./passErrorMessage";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
+import passErrorMessage from "errorHandlers/passErrorMessage";
 
 const path = process.env.REACT_APP_PATH;
 
