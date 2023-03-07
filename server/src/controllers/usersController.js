@@ -1,14 +1,6 @@
 const User = require("../models/userModel");
 
 exports.getStudents = async (req, res, next) => {
-  // const limit = parseInt(req.query.limit ? req.query.limit : "");
-  // const page = parseInt(req.query.page ? req.query.page : "");
-  // let sortDate = parseInt(req.query.sortDate ? req.query.sortDate : "");
-  // sortDate = sortDate === "desc" ? 1 : -1;
-
-  // const filterQuery = req.query.filter;
-  // const filters = {};
-  //TODO: add regex search from middle/pagination
   try {
     const students = await User.find({ role: "student" });
 
@@ -24,7 +16,6 @@ exports.createUser = async (req, res, next) => {
   try {
     await user.save();
 
-    // const token = await user.generateAuthToken();
     res.status(201).send(user);
   } catch (err) {
     next(err);

@@ -19,14 +19,6 @@ exports.getCourse = async (req, res, next) => {
 };
 
 exports.getAllCourses = async (req, res, next) => {
-  // const limit = parseInt(req.query.limit ? req.query.limit : "");
-  // const page = parseInt(req.query.page ? req.query.page : "");
-  // let sortDate = parseInt(req.query.sortDate ? req.query.sortDate : "");
-  // sortDate = sortDate === "desc" ? 1 : -1;
-
-  // const filterQuery = req.query.filter;
-  // const filters = {};
-  //TODO: add regex search from middle/pagination
   try {
     const courses = await Course.find({}).populate("schedule");
 

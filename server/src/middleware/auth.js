@@ -3,7 +3,6 @@ const User = require("../models/userModel");
 const CustomError = require("../utils/customError");
 
 const authUser = async (req, res, next) => {
-  console.log("AUTH ENTER");
   try {
     if (!req.header("Authorization"))
       return next(
