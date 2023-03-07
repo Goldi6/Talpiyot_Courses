@@ -14,7 +14,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { UserContext } from "Context/userContext";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
-import { createUser, login } from "server/auth";
+import { login } from "server/auth";
 import { saveUserOnCookie } from "Cookies/cookies";
 import authErrorHandler from "errorHandlers/authErrors";
 import { userLogin_Action } from "Reducers/Actions/UserActions";
@@ -25,7 +25,7 @@ export default function Login(props) {
   const navigate = useNavigate();
 
   //STATES
-  const [errorMessage, setErrorMessage] = useState("");
+  const [, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (props.errorMessage) setErrorMessage(props.errorMessage);
@@ -84,10 +84,6 @@ export default function Login(props) {
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-
-    // createUser("professor", "black", "p@a.com", "123QWEasd", "professor")
-    //   .then((userData) => console.log(userData))
-    //   .catch((err) => console.log(err));
 
     login(email, password)
       .then((userData) => {
