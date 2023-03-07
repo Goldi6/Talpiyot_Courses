@@ -21,7 +21,7 @@ export const updateProfile = async (user) => {
       user: returnUserDataSet(res.data),
     };
   } catch (err) {
-    passErrorMessage(err);
+    return passErrorMessage(err);
   }
 };
 
@@ -32,7 +32,7 @@ export async function getUserCurses() {
     });
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 export async function getUserSchedule() {
@@ -42,7 +42,7 @@ export async function getUserSchedule() {
     });
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 export async function getNextClassForUser() {
@@ -53,7 +53,7 @@ export async function getNextClassForUser() {
     console.log(req.data);
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 //
@@ -69,7 +69,7 @@ export async function attendOnTime(classID, attendanceID) {
     );
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 
@@ -84,7 +84,7 @@ export async function markAttendedAfterClassWasOver(attendanceId) {
     );
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 
@@ -99,7 +99,7 @@ export async function submitAbsenceReason(attendanceID, reason) {
     );
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }
 
@@ -110,6 +110,6 @@ export async function getUnattendedClasses() {
     });
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 }

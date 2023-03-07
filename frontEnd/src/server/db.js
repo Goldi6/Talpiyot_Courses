@@ -14,12 +14,10 @@ export const getList = async (type_path) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 export const getCourses = async () => {
-  console.log("getters");
-
   try {
     const req = await axios.get(`${path}/courses`, {
       headers: AUTH_Header(getTokenFromCookie()),
@@ -27,7 +25,7 @@ export const getCourses = async () => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 export const getStudents = async () => {
@@ -39,7 +37,7 @@ export const getStudents = async () => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -51,7 +49,7 @@ export const deleteItem = async (id, from_path) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -63,7 +61,7 @@ export const createCourse = async (courseData) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -76,7 +74,7 @@ export const getCourse = async (id) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -97,7 +95,7 @@ export const addStudentToCourse = async (course_id, student_id) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -118,7 +116,7 @@ export const deleteStudentFromCourse = async (course_id, student_id) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -138,7 +136,7 @@ export const deleteClassFromCourse = async (course_id, class_id) => {
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -164,7 +162,7 @@ export const addCourseSchedule = async ({
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 
@@ -189,7 +187,7 @@ export const updateCourseSchedule = async (
 
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return passErrorMessage(error);
   }
 };
 

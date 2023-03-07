@@ -14,6 +14,7 @@ import { CourseContext } from "Context/courseContext";
 import { addStudentToCourse, getStudents } from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
 import NestedList from "./ActiveStudentsList";
+import { useNavigate } from "react-router-dom";
 
 export default function AddStudentsForm() {
   const { courseData, courseDispatch } = useContext(CourseContext);
@@ -22,14 +23,19 @@ export default function AddStudentsForm() {
   const [nonParticipantStudents, setNonParticipantStudents] = React.useState(
     []
   );
+  const navigate = useNavigate();
   useEffect(() => {
     let render = true;
     if (render) {
-      getStudents().then((dataList) => {
-        setStudentData([...dataList]);
-        const newList = mapList([...dataList]);
-        setNonParticipantStudents(newList);
-      });
+      getStudents()
+        .then((dataList) => {
+          setStudentData([...dataList]);
+          const newList = mapList([...dataList]);
+          setNonParticipantStudents(newList);
+        })
+        .catch((err) => {
+          navigate(`/error/${err.message}`);
+        });
     }
     return () => {
       render = false;

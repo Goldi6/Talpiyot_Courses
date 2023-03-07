@@ -15,8 +15,10 @@ import { isAtLeastAge } from "utils/calcAge";
 import { getSimpleDate } from "utils/dates";
 import validator from "validator";
 import { convertToMuiDateFormat } from "../../utils/dates";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { userDispatch, userData } = useContext(UserContext);
 
   const initialMessageState = {
@@ -247,8 +249,8 @@ export default function Profile() {
         userDispatch(userUpdateAccount_Action(newData));
         saveUserOnCookie(newData);
         reset(e.target);
-      }) //TODO handle error
-      .catch((err) => console.log(err));
+      })
+      .catch((err) => navigate(`/navigate/${err.message}`));
   };
 
   return (

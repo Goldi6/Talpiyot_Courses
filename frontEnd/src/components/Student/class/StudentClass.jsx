@@ -1,11 +1,12 @@
-import { UserContext } from "Context/userContext";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { attendOnTime, getNextClassForUser } from "server/profile";
 import { getSimpleDate, getSimpleTime, isNowBetweenTimes } from "utils/dates";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentClass() {
-  const { userData } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [schedule, setSchedule] = React.useState([]);
   //
   const [now, setNow] = React.useState(new Date());
@@ -13,11 +14,16 @@ export default function StudentClass() {
   setInterval(() => setNow(new Date()), 60000);
   useEffect(() => {
     let render = true;
-    if (render) getNextClassForUser().then((data) => setSchedule(data));
+    if (render)
+      getNextClassForUser()
+        .then((data) => setSchedule(data))
+        .catch((err) => {
+          navigate(`/error/${err.message}`);
+        });
     return () => {
       render = false;
     };
-  }, []);
+  }, [navigate]);
 
   function onClickAttend(classId, attendanceId) {
     attendOnTime(classId, attendanceId).then((data) => {
@@ -37,7 +43,7 @@ export default function StudentClass() {
     <div>
       <h2>Todays Classes</h2>
       <h2 style={{ textAlign: "center" }}>{getSimpleDate(new Date())}</h2>
-      {schedule.length > 0 &&
+      {schedule.length > 0 ? (
         schedule.map((classAttendance, i) => {
           return (
             <div key={i} style={{ borderBottom: "1px solid black" }}>
@@ -78,7 +84,10 @@ export default function StudentClass() {
               )}
             </div>
           );
-        })}
+        })
+      ) : (
+        <Typography textAlign="center">No classes for today</Typography>
+      )}
     </div>
   );
 }

@@ -2,23 +2,34 @@ import { Typography } from "@mui/material";
 import React from "react";
 import { getUserCurses } from "server/profile";
 import { getSimpleDate } from "utils/dates";
+import ScheduleList from "./ScheduleList";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentCourses() {
+  const navigate = useNavigate();
   const [courses, setCourses] = React.useState([]);
+  console.log(courses);
 
   React.useEffect(() => {
     let render = true;
-    if (render) getUserCurses().then((data) => setCourses(data.courses));
+    if (render)
+      getUserCurses()
+        .then((data) => {
+          setCourses(data.courses);
+        })
+        .catch((err) => {
+          navigate(`/error/${err.message}`);
+        });
     return () => {
       render = false;
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
-      <Typography variant="h3" style={{ textAlign: "center" }}>
+      <Typography variant="h3" textAlign="center">
         Courses{" "}
-        <Typography color="primary">
+        <Typography color="secondary">
           You have <b>{courses.length}</b> courses
         </Typography>
       </Typography>
@@ -26,10 +37,14 @@ export default function StudentCourses() {
         courses.map((course, i) => {
           return (
             <div key={i}>
-              <h3>{course.name}</h3>
+              <Typography variant="h4">{course.name} </Typography>
               <div>
-                <p>Start date: {getSimpleDate(course.startDate)}</p>
-                <p>End date: {getSimpleDate(course.endDate)}</p>
+                <ScheduleList
+                  scheduleArray={course.schedule}
+                  courseId={course.id}
+                  courseDates={`${getSimpleDate(course.startDate)} -
+                  ${getSimpleDate(course.endDate)}`}
+                ></ScheduleList>
               </div>
             </div>
           );

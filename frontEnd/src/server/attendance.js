@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
-import passErrorMessage from "errorHandlers/passErrorMessage";
+import PassErrorMessage from "../errorHandlers/passErrorMessage";
 
 const path = process.env.REACT_APP_PATH;
 
@@ -11,10 +11,9 @@ export const getAttendanceData = async () => {
       headers: AUTH_Header(getTokenFromCookie()),
     });
 
-    //    console.log(req.data);
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return PassErrorMessage(error);
   }
 };
 
@@ -29,9 +28,8 @@ export const GetClassAttendance = async (courseId, scheduleIds) => {
       }
     );
 
-    //    console.log(req.data);
     return req.data;
   } catch (error) {
-    passErrorMessage(error);
+    return PassErrorMessage(error);
   }
 };

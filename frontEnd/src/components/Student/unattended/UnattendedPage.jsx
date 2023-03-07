@@ -13,22 +13,27 @@ import {
 } from "server/profile";
 import { getSimpleTime } from "utils/dates";
 import { getSimpleDate } from "../../../utils/dates";
+import { useNavigate } from "react-router-dom";
 
 export default function UnattendedPage() {
   const [unAttendedClasses, setUnattendedClasses] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     let render = true;
     if (render)
-      getUnattendedClasses().then((data) => {
-        if (Array.isArray(data)) {
-          setUnattendedClasses(data);
-        }
-      });
+      getUnattendedClasses()
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setUnattendedClasses(data);
+          }
+        })
+        .catch((err) => {
+          navigate(`/error/${err.message}`);
+        });
     return () => {
       render = false;
     };
-  }, []);
+  }, [navigate]);
 
   function onSubmitUpdateReason(attendanceId, reason, i) {
     submitAbsenceReason(attendanceId, reason).then((data) => {
@@ -79,9 +84,11 @@ export default function UnattendedPage() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   const thisForm = e.target;
+                  // @ts-ignore
                   const reason = thisForm.elements[0].value.trim();
                   if (reason !== "")
                     onSubmitUpdateReason(classExpectingReason._id, reason, i);
+                  // @ts-ignore
                   thisForm.elements[0].value = "";
                 }}
               >

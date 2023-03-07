@@ -20,8 +20,9 @@ export default function CourseContextProvider(props) {
           if (isComponentExists) courseDispatch(initCourseRoom_Action(course));
       })
       .catch((error) => {
-        navigate("/NotFound404", { replace: true, state: { error: error } });
-        console.log(error);
+        navigate(`/error/${error.message}`, {
+          replace: true,
+        });
       });
 
     return () => {

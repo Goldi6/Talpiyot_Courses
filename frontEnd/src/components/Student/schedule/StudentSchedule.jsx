@@ -1,17 +1,22 @@
 import React from "react";
 import { getUserSchedule } from "server/profile";
 import { getSimpleTime, getSimpleDate } from "../../../utils/dates";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentSchedule() {
   const [schedule, setSchedule] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     let render = true;
-    if (render) getUserSchedule().then((data) => setSchedule(data));
+    if (render)
+      getUserSchedule()
+        .then((data) => setSchedule(data))
+        .catch((err) => navigate(`/error/${err.message}`));
     return () => {
       render = false;
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
