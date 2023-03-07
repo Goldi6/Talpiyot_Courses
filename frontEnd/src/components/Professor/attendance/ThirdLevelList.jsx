@@ -10,8 +10,6 @@ import { getSimpleDate } from "utils/dates";
 import { getSimpleTime } from "../../../utils/dates";
 
 export default function ThirdLevelCollapse({ attendees, absentees }) {
-  const [open, setOpen] = React.useState({});
-
   const secondaryTitleStyle = {
     padding: "0 .74rem",
     borderBottom: "1px solid #111",
@@ -25,12 +23,7 @@ export default function ThirdLevelCollapse({ attendees, absentees }) {
     gap: "3rem",
     alignItems: "center",
   };
-  const studentPrimaryStyle = {
-    style: {
-      textTransform: "capitalize",
-      textDecoration: "underline",
-    },
-  };
+
   const attendantsStyle = {
     borderBottom: "1px solid #999",
     borderLeft: "1px solid #ddd",
@@ -41,13 +34,6 @@ export default function ThirdLevelCollapse({ attendees, absentees }) {
     borderBottom: "1px solid #999",
     borderLeft: "1px solid #ddd",
     backgroundColor: "#ffcdd2",
-  };
-
-  const handleClick = (id) => {
-    setOpen((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
   };
 
   return (
@@ -74,30 +60,27 @@ export default function ThirdLevelCollapse({ attendees, absentees }) {
             const studentEmail = subSubItem.student.email;
             const checkInTime = getSimpleTime(subSubItem.timeAttended);
             return (
-              <>
-                <dl className="detail-list" style={attendantsStyle}>
-                  <dt>
-                    <ListItem key={subSubItem.id}>
-                      <ListItemIcon>{i + 1}.</ListItemIcon>
-                      <ListItemText
-                        style={studentDataStyle}
-                        primaryTypographyProps={studentPrimaryStyle}
-                        primary={studentName}
-                        secondary={studentEmail}
-                      />
-                    </ListItem>
-                  </dt>
-                  <dd>
-                    <Typography variant="overline">
-                      <b>
-                        Checked:
-                        <span> </span>
-                        <span style={{ fontSize: "small" }}>{checkInTime}</span>
-                      </b>
-                    </Typography>
-                  </dd>
-                </dl>
-              </>
+              <dl className="detail-list" style={attendantsStyle} key={i}>
+                <dt>
+                  <ListItem key={subSubItem.id}>
+                    <ListItemIcon>{i + 1}.</ListItemIcon>
+                    <ListItemText
+                      style={studentDataStyle}
+                      primary={studentName}
+                      secondary={studentEmail}
+                    />
+                  </ListItem>
+                </dt>
+                <dd>
+                  <Typography variant="overline">
+                    <b>
+                      Checked:
+                      <span> </span>
+                      <span style={{ fontSize: "small" }}>{checkInTime}</span>
+                    </b>
+                  </Typography>
+                </dd>
+              </dl>
             );
           })
         ) : (
@@ -128,49 +111,44 @@ export default function ThirdLevelCollapse({ attendees, absentees }) {
                 getSimpleTime(subSubItem.timeAttended)
               : "";
             return (
-              <>
-                <dl className="detail-list" key={i} style={absentsStyle}>
-                  <dt>
-                    <ListItem key={subSubItem.id}>
-                      <ListItemIcon>{i + 1}.</ListItemIcon>
-                      <ListItemText
-                        style={studentDataStyle}
-                        primaryTypographyProps={studentPrimaryStyle}
-                        primary={studentName}
-                        secondary={studentEmail}
-                      />
-                    </ListItem>
-                  </dt>
-                  <dd>
-                    <Typography variant="overline">
-                      <b>
-                        Reason:
-                        <span> </span>
-                        {reason.length > 0 ? (
-                          <span style={{ fontSize: "small" }}>
-                            {timeUpdated}
-                          </span>
-                        ) : (
-                          <span style={{ color: "red" }}>"missing"</span>
-                        )}
-                      </b>
+              <dl className="detail-list" key={i} style={absentsStyle}>
+                <dt>
+                  <ListItem key={subSubItem.id}>
+                    <ListItemIcon>{i + 1}.</ListItemIcon>
+                    <ListItemText
+                      style={studentDataStyle}
+                      primary={studentName}
+                      secondary={studentEmail}
+                    />
+                  </ListItem>
+                </dt>
+                <dd>
+                  <Typography variant="overline">
+                    <b>
+                      Reason:
+                      <span> </span>
+                      {reason.length > 0 ? (
+                        <span style={{ fontSize: "small" }}>{timeUpdated}</span>
+                      ) : (
+                        <span style={{ color: "red" }}>"missing"</span>
+                      )}
+                    </b>
+                  </Typography>
+                  {reason.length > 0 && (
+                    <Typography
+                      variant="body2"
+                      style={{
+                        margin: "0 0.75rem",
+                        background: "#eee",
+                        padding: "0.45rem",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      {reason}
                     </Typography>
-                    {reason.length > 0 && (
-                      <Typography
-                        variant="body2"
-                        style={{
-                          margin: "0 0.75rem",
-                          background: "#eee",
-                          padding: "0.45rem",
-                          marginBottom: "0.25rem",
-                        }}
-                      >
-                        {reason}
-                      </Typography>
-                    )}
-                  </dd>
-                </dl>
-              </>
+                  )}
+                </dd>
+              </dl>
             );
           })
         ) : (

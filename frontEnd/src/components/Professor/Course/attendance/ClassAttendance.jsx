@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { GetClassAttendance } from "server/atttendance";
+import { GetClassAttendance } from "server/attendance";
 import { CourseContext } from "Context/courseContext";
 import { isStartDateBeforeEndDate } from "utils/dates";
-import SecondLevelCollapse from "components/Proffessor/attendance/secondLevelList";
+import SecondLevelCollapse from "components/Professor/attendance/secondLevelList";
 
 export default function ClassAttendance() {
   const { courseData } = useContext(CourseContext);

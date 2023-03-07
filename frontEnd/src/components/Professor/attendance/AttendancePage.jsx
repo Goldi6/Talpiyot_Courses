@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Diversity1 } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import { getAttendanceData } from "server/atttendance";
+import { getAttendanceData } from "server/attendance";
 import CustomizedCollapse from "./ThreeLevelSlideList";
 
 export default function AttendancePage() {
@@ -12,8 +11,6 @@ export default function AttendancePage() {
     if (requested) {
       getAttendanceData().then((data) => {
         setAttendanceData(data);
-        console.log(attendanceData);
-        console.log(data);
       });
     }
     return () => {

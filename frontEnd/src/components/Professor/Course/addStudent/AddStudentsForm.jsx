@@ -11,12 +11,7 @@ import {
 import React, { useContext, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { CourseContext } from "Context/courseContext";
-import {
-  addStudentToCourse,
-  editCourseStudentList,
-  getList,
-  getStudents,
-} from "server/db";
+import { addStudentToCourse, getStudents } from "server/db";
 import { updateStudentsInCourse } from "Reducers/Actions/CourseAction";
 import NestedList from "./ActiveStudentsList";
 
@@ -27,13 +22,11 @@ export default function AddStudentsForm() {
   const [nonParticipantStudents, setNonParticipantStudents] = React.useState(
     []
   );
-  console.log("DDD");
   useEffect(() => {
     let render = true;
     if (render) {
       getStudents().then((dataList) => {
         setStudentData([...dataList]);
-        console.log(studentData);
         const newList = mapList([...dataList]);
         setNonParticipantStudents(newList);
       });
@@ -47,8 +40,6 @@ export default function AddStudentsForm() {
   function mapList(allStudents, id = "") {
     const assignedIDs = [...courseData.students].map((student) => student._id);
 
-    console.log(assignedIDs);
-    //FIXME: why courseData is noy updated?
     if (id !== "") assignedIDs.push(id);
     let unassigned = allStudents.filter((student) => {
       return !assignedIDs.includes(student._id);
@@ -61,7 +52,6 @@ export default function AddStudentsForm() {
   function onClickAddStudent(_id) {
     addStudentToCourse(courseData._id, _id).then((res) => {
       courseDispatch(updateStudentsInCourse({ ...res }));
-      console.log(studentData);
       const newList = mapList([...studentData], _id);
       setNonParticipantStudents(newList);
     });

@@ -23,13 +23,12 @@ export default function CustomizedCollapse({ attendanceData }) {
           const classesData = item.classes;
 
           return (
-            <>
+            <React.Fragment key={index}>
               <ListItem
                 component="li"
                 onClick={() => {
                   handleClick(courseId);
                 }}
-                key={index}
               >
                 <KeyboardArrowRightIcon style={{ paddingRight: "0.5rem" }} />
 
@@ -58,7 +57,7 @@ export default function CustomizedCollapse({ attendanceData }) {
                   <SecondLevelCollapse classesData={classesData} />
                 </List>
               </Collapse>
-            </>
+            </React.Fragment>
           );
         })}
       </List>
