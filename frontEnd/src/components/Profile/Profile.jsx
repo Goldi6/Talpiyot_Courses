@@ -19,83 +19,62 @@ import { convertToMuiDateFormat } from "../../utils/dates";
 export default function Profile() {
   const { userDispatch, userData } = useContext(UserContext);
 
-  const [invalidInput_message, setInvalidInput_message] = useState({
+  const initialMessageState = {
     firstName: "",
     lastName: "",
     birthday: "",
     email: "",
     general: "",
-  });
-  const [isValidInputs_array, setIsValidInputs_array] = useState({
+  };
+  const initialValidateState = {
     firstName: true,
     lastName: true,
     birthday: true,
     email: true,
-  });
+  };
 
-  const [firstName, setFirstName] = useState(userData.firstName);
-  const [lastName, setLastName] = useState(userData.lastName);
-  const [birthday, setBirthday] = useState(userData.birthday);
-  const [email, setEmail] = useState(userData.email);
-  // const [password, setPassword] = useState("");
+  const [invalidInput_message, setInvalidInput_message] =
+    useState(initialMessageState);
+  const [isValidInputs_array, setIsValidInputs_array] =
+    useState(initialValidateState);
 
-  //TODO
-  // const isSubmitDisabled = () => {
-  //   const inputsNotEmpty = [firstName, lastName, email].every(
-  //     (val) => val !== ""
-  //   );
-  //   const inputsAreValid = Object.values(isValidInputs_array).every(
-  //     (val) => val
-  //   );
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [email, setEmail] = useState("");
 
-  //   //console.log(!inputsNotEmpty && !inputsAreValid);
-  //   //return !inputsNotEmpty || !inputsAreValid;
-  //   return false;
-  // };
+  const reset = (form) => {
+    setFirstName("");
+    setLastName("");
+    setBirthday("");
+    setEmail("");
+    setIsValidInputs_array(initialValidateState);
+    setInvalidInput_message(initialMessageState);
+    form.reset();
+  };
 
-  // const onBlurValidate_PasswordRepeatInput = (e) => {
-  //   const comparePasswords = (repeatedPassword) => {
-  //     return repeatedPassword === password;
-  //   };
+  const isSubmitDisabled = () => {
+    const inputsNotEmpty = [firstName, lastName, email, birthday].some(
+      (val) => val !== ""
+    );
 
-  //   const input = e.target;
-  //   const inputValue = input.value.trim();
-  //   const inputName = input.getAttribute("name");
+    const InputsAreDifferentFromOriginalData = [
+      firstName !== userData.firstName,
+      lastName !== userData.lastName,
+      birthday !== userData.birthday,
+      email !== userData,
+    ];
+    const inputsAreValid = Object.values(isValidInputs_array).every(
+      (val) => val
+    );
 
-  //   validateInput(
-  //     inputValue,
-  //     inputName,
-  //     comparePasswords,
-  //     "passwords don't match"
-  //   );
-  // };
+    return !(
+      inputsNotEmpty &&
+      InputsAreDifferentFromOriginalData &&
+      inputsAreValid
+    );
+  };
 
-  // const onBlurValidate_PasswordInput = (e) => {
-  //   const verifyPassword = (passwordInput) => {
-  //     const options = { min: 6, minSymbols: 0 };
-  //     return (
-  //       validator.isStrongPassword(passwordInput, options) ||
-  //       passwordInput === ""
-  //     );
-  //   };
-
-  //   const input = e.target;
-  //   const inputValue = input.value.trim();
-  //   const inputName = input.getAttribute("name");
-
-  //   setPassword(
-  //     validateInput(
-  //       inputValue,
-  //       inputName,
-  //       verifyPassword,
-  //       "password length must be at least 6 chars and contain lower and uppercase letters and a number",
-  //       setInvalidInput_message,
-  //       setIsValidInputs_array
-  //     )
-  //       ? inputValue
-  //       : ""
-  //   );
-  // };
   const onBlurValidate_EmailInput = (e) => {
     const input = e.target;
     const inputValue = input.value.trim();
@@ -267,7 +246,8 @@ export default function Profile() {
       .then((newData) => {
         userDispatch(userUpdateAccount_Action(newData));
         saveUserOnCookie(newData);
-      })
+        reset(e.target);
+      }) //TODO handle error
       .catch((err) => console.log(err));
   };
 
@@ -351,7 +331,7 @@ export default function Profile() {
           <Button
             variant="contained"
             type="submit"
-            // disabled={isSubmitDisabled()}
+            disabled={isSubmitDisabled()}
           >
             Update
           </Button>
