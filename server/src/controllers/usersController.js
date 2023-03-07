@@ -44,7 +44,7 @@ exports.deleteUser = async (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
   try {
     const _id = req.user._id;
-    const user = await User.findOneAndUpdate({ _id }, req.body.user, {
+    const user = await User.findOneAndUpdate({ _id }, req.body, {
       new: true,
       runValidators: true,
     });
