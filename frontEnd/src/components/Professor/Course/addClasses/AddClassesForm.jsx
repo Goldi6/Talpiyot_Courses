@@ -1,5 +1,4 @@
-import { StudentsContext } from "Context/StudentsContext";
-import React, { useContext } from "react";
+import React from "react";
 import Picker from "./datePicker/Picker";
 import ClassesList from "./classesList/classesList";
 

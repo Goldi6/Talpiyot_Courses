@@ -5,7 +5,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { CourseContext } from "Context/courseContext";
 import { simpleDateToDate } from "utils/dates";
-import { max } from "moment";
 
 export default function PickDate({ value, setValue }) {
   const handleChange = (newValue) => {

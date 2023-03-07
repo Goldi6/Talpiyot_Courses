@@ -1,11 +1,7 @@
 import React, { useContext, useState } from "react";
 import PickDate from "./PickDate";
 import PickTime from "./PickTime";
-import {
-  getDateAndTimesFromMUI,
-  isStartDateBeforeEndDate,
-  simpleDateToDate,
-} from "utils/dates";
+import { getDateAndTimesFromMUI, isStartDateBeforeEndDate } from "utils/dates";
 import { CourseContext } from "Context/courseContext";
 import { addCourseSchedule } from "server/db";
 import { Button } from "@mui/material";
@@ -65,7 +61,9 @@ export default function Picker() {
         </div>
         <div className="flex-row">
           {timeError.isError && (
-            <p style={{ color: "red", fontSize: "small" }}>{timeError}</p>
+            <p style={{ color: "red", fontSize: "small" }}>
+              {timeError.message}
+            </p>
           )}
           <div className="flex-col">
             <h3>Start time:</h3>
