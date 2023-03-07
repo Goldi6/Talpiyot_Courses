@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Schedule = require("./scheduleModel");
 const CustomError = require("../utils/customError");
 
 const userSchema = new mongoose.Schema(
   {
+    // user gets random password and needs to change it on first access
     firstAccess: {
       type: Boolean,
       default: true,
@@ -81,18 +81,10 @@ const userSchema = new mongoose.Schema(
         ref: "Course",
       },
     ],
-    // tokens: [
-    //   {
-    //     token: {
-    //       type: String,
-    //       //required: true,
-    //     },
-    //   },
-    // ],
+
     token: {
       type: String,
       default: "",
-      //required: true,
     },
   },
   {
@@ -161,32 +153,6 @@ userSchema.methods.toJSON = function () {
 
   return userObj;
 };
-
-////////////
-//getters
-// ////////////
-// userSchema.virtual("age").get(function () {
-//   let age = new Date() - new Date(this.birthday).getTime();
-//   age = new Date(age);
-//   age = age.getUTCFullYear();
-//   age = Math.abs(age - 1970);
-//   return age;
-// });
-
-// userSchema.virtual("coursesCount").get(function () {
-//   let finished = 0;
-//   let unfinished = 0;
-//   const coursesAll = this.courses;
-//   for (const course of coursesAll) {
-//     if (course.finished) {
-//       finished++;
-//     } else {
-//       unfinished++;
-//     }
-//   }
-
-//   return { finished, unfinished };
-// });
 
 const User = mongoose.model("User", userSchema);
 
