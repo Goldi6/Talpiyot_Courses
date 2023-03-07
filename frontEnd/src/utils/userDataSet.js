@@ -4,6 +4,7 @@ export const returnUserDataSet = (user) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
+    birthday: user.birthday,
     _id: user._id,
   };
 };

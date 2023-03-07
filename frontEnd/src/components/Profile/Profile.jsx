@@ -10,10 +10,11 @@ import { UserContext } from "Context/userContext";
 import { saveUserOnCookie } from "Cookies/cookies";
 import { userUpdateAccount_Action } from "Reducers/Actions/UserActions";
 import React, { useContext, useState } from "react";
-import { updateUser } from "server/auth";
 import { updateProfile } from "server/profile";
 import { isAtLeastAge } from "utils/calcAge";
+import { getSimpleDate } from "utils/dates";
 import validator from "validator";
+import { convertToMuiDateFormat } from "../../utils/dates";
 
 export default function Profile() {
   const { userDispatch, userData } = useContext(UserContext);
@@ -23,8 +24,6 @@ export default function Profile() {
     lastName: "",
     birthday: "",
     email: "",
-    // password: "",
-    // passwordRepeat: "",
     general: "",
   });
   const [isValidInputs_array, setIsValidInputs_array] = useState({
@@ -32,8 +31,6 @@ export default function Profile() {
     lastName: true,
     birthday: true,
     email: true,
-    // password: true,
-    // passwordRepeat: true,
   });
 
   const [firstName, setFirstName] = useState(userData.firstName);
@@ -222,39 +219,29 @@ export default function Profile() {
     {
       type: "text",
       name: "firstName",
-      placeholder: "Please enter your name",
       validator: onBlurValidate_FirstNameInput,
+      label: "First name",
     },
     {
       type: "text",
       name: "lastName",
-      placeholder: "Please enter your last name",
       validator: onBlurValidate_LastNameInput,
+      label: "Last name",
     },
     {
       type: "text",
       name: "email",
-      placeholder: "Please enter your email",
+      label: "Email",
+
       validator: onBlurValidate_EmailInput,
     },
     {
       type: "date",
       name: "birthday",
-      placeholder: "Please enter your age",
+      label: "Birthday",
+
       validator: onBlurValidate_DateInput,
     },
-    // {
-    //   type: "password",
-    //   name: "password",
-    //   placeholder: "Enter a new password",
-    //   validator: onBlurValidate_PasswordInput,
-    // },
-    // {
-    //   type: "password",
-    //   name: "passwordRepeat",
-    //   placeholder: "Repeat your password",
-    //   validator: onBlurValidate_PasswordRepeatInput,
-    // },
   ];
 
   const onSubmitForm = (e) => {
@@ -264,7 +251,6 @@ export default function Profile() {
       lastName,
       birthday,
       email,
-      // password,
     };
 
     const keys = Object.keys(newData);
@@ -301,7 +287,9 @@ export default function Profile() {
           padding: "1rem",
         }}
       >
-        <Typography variant="h3">User Data</Typography>
+        <Typography variant="h3" style={{ paddingBottom: "2rem" }}>
+          User Data
+        </Typography>
         <Stack gap="1rem">
           <Typography>
             <b>first name:</b> {userData.user.firstName}
@@ -313,7 +301,7 @@ export default function Profile() {
             <b>email:</b> {userData.user.email}
           </Typography>
           <Typography>
-            <b>Birth date:</b> {userData.user.birthDate}
+            <b>Birth date:</b> {getSimpleDate(userData.user.birthday)}
           </Typography>
         </Stack>
       </Box>
@@ -334,17 +322,26 @@ export default function Profile() {
           Edit Profile
         </Typography>
         {inputs.map((input) => {
+          let placeholder = userData.user[input.name];
+          let defaultValue = "";
+          if (input.type === "date") {
+            defaultValue = convertToMuiDateFormat(placeholder);
+            placeholder = "";
+          }
+
           return (
             <TextField
               key={input.name}
               onInput={input.validator}
               error={!isValidInputs_array[input.name]}
               type={input.type}
-              label={input.name}
+              label={input.label}
               variant="standard"
               helperText={invalidInput_message[input.name]}
               InputProps={{}}
               InputLabelProps={{ shrink: true }}
+              placeholder={placeholder}
+              defaultValue={defaultValue}
             />
           );
         })}

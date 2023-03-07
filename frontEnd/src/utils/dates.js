@@ -28,6 +28,13 @@ export function getSimpleTime(time) {
   const minute = time.getMinutes() + 1;
   return `${hour}:${minute}`;
 }
+export function convertToMuiDateFormat(date) {
+  date = new Date(date);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-indexed, so add 1
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+}
 
 export function getDateAndTimesFromMUI(
   dateValue,
