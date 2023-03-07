@@ -24,7 +24,7 @@ export default function StudentClass() {
       render = false;
     };
   }, [navigate]);
-
+  console.log(schedule);
   function onClickAttend(classId, attendanceId) {
     attendOnTime(classId, attendanceId).then((data) => {
       if (data.attended) {
@@ -44,19 +44,16 @@ export default function StudentClass() {
       <h2>Todays Classes</h2>
       <h2 style={{ textAlign: "center" }}>{getSimpleDate(new Date())}</h2>
       {schedule.length > 0 ? (
-        schedule.map((classAttendance, i) => {
+        schedule.map((todaysClass, i) => {
           return (
             <div key={i} style={{ borderBottom: "1px solid black" }}>
-              <h3>{classAttendance.class.name}</h3>
+              <h3>{todaysClass.name}</h3>
               <div>
-                <p>
-                  {getSimpleTime(classAttendance.class.startTime)} -{" "}
-                  {getSimpleTime(classAttendance.class.endTime)}
-                </p>
+                <p>{todaysClass.dateAndTime.time}</p>
               </div>
               {isNowBetweenTimes(
-                classAttendance.class.startTime,
-                classAttendance.class.endTime,
+                todaysClass.startTime,
+                todaysClass.endTime,
                 now
               ) && (
                 <div
@@ -67,16 +64,13 @@ export default function StudentClass() {
                   }}
                 >
                   <Button
-                    disabled={classAttendance.attended}
+                    disabled={todaysClass.attended}
                     variant="contained"
                     onClick={() => {
-                      onClickAttend(
-                        classAttendance.class._id,
-                        classAttendance._id
-                      );
+                      onClickAttend(todaysClass.id, todaysClass.attendanceId);
                     }}
                   >
-                    {classAttendance.attended ? "In class" : "Attend"}
+                    {todaysClass.attended ? "In class" : "Attend"}
                   </Button>
                   <br />
                   <br />

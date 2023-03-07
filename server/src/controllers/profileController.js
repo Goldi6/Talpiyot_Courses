@@ -54,7 +54,6 @@ exports.getTodaysClassesForUser = async (req, res, next) => {
   const courses = req.user.courses.map((course) => {
     return course.toString();
   });
-
   const todaysClassQuery = {
     $and: [{ courseId: { $in: courses } }, { date: today }],
   };
@@ -63,20 +62,26 @@ exports.getTodaysClassesForUser = async (req, res, next) => {
       startTime: 1,
     });
 
-    const getAttendanceSchedulePromises = schedule.map(
-      async (classSchedule) => {
-        const attendDoc = await Attendant.findOne({
-          class: classSchedule,
-          student: req.user._id,
-        }).populate("class");
+    const readySchedulePromises = schedule.map(async (classObj) => {
+      let obj = classObj.toObject();
+      delete obj.createdAt;
+      delete obj.updatedAt;
+      delete obj["__v"];
+      delete obj._id;
 
-        return attendDoc;
-      }
-    );
+      const attendance = await Attendant.findUserClass(req.user.id, obj.id);
+      delete attendance._id;
+      return {
+        ...obj,
+        attendanceId: attendance.id,
+        attended: attendance.attended,
+        checkInTime: attendance.checkInTime,
+      };
+    });
 
-    const attendanceSchedule = await Promise.all(getAttendanceSchedulePromises);
+    const readySchedules = await Promise.all(readySchedulePromises);
 
-    res.send(attendanceSchedule);
+    res.send(readySchedules);
   } catch (error) {
     next(error);
   }

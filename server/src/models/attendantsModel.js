@@ -69,6 +69,15 @@ attendanceSchema.methods.toJSON = function () {
   return scheduleItemObj;
 };
 
+attendanceSchema.statics.findUserClass = async function (userId, classId) {
+  const result = await Attendant.findOne({
+    student: userId,
+    class: classId,
+  }).select("attended timeAttended");
+
+  return result;
+};
+
 const Attendant = mongoose.model("Attendant", attendanceSchema);
 
 module.exports = Attendant;

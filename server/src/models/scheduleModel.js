@@ -31,19 +31,6 @@ const scheduleSchema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
     },
-    // methods: {
-    //   async getStudentAttendance(studentId) {
-    //     const scheduledClass = this;
-    //     console.log(this);
-
-    //     const attendance = await Attendant.findOne({
-    //       schedule: this._id,
-    //       student: studentId,
-    //     });
-
-    //     return attendance;
-    //   },
-    // },
   }
 );
 
