@@ -23,7 +23,7 @@ export default function AttendancePage() {
 
   return (
     <>
-      <Typography variant="h2" style={{ textAlign: "center" }}>
+      <Typography variant="h2" textAlign="center">
         Attendance table
       </Typography>
       {attendanceData.length > 0 ? (

@@ -73,7 +73,7 @@ export default function AddStudentsForm() {
 
       <form>
         <Stack spacing={2}>
-          <Typography variant="h5" sx={{ textAlign: "center" }}>
+          <Typography variant="h5" textAlign="center">
             Add Students
           </Typography>
 

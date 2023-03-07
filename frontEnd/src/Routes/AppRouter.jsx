@@ -4,14 +4,13 @@ import HeaderLoader from "components/Header/HeaderLoader";
 import { Navigate, Route, Routes } from "react-router-dom";
 import PublicRoute from "./publicRouter";
 import Login from "components/Login/Login";
-import NotFound404 from "components/404/NotFound404";
+import NotFound404 from "components/Errors/NotFound404";
 import ProfessorRoute from "./professorRoute";
-import ProfessorCourses from "components/Proffessor/Courses/ProfessorCourses";
-import ProfessorCourseLoader from "components/Proffessor/Course/ProfessorCourse_Loader";
-import Students from "components/Proffessor/Students/Students";
+import ProfessorCourses from "components/Professor/Courses/ProfessorCourses";
+import ProfessorCourseLoader from "components/Professor/Course/ProfessorCourse_Loader";
+import Students from "components/Professor/Students/Students";
 import StudentRoute from "./StudentRoute";
 import StudentCourses from "components/Student/Courses/StudentCourses";
-import StudentCourse from "components/Student/Course/StudentCourse";
 import Layout from "components/Layout/Layout";
 import Home from "components/Home/Home";
 import PrivetRoute from "./privetRoute";
@@ -19,7 +18,9 @@ import Profile from "components/Profile/Profile";
 import StudentSchedule from "components/Student/schedule/StudentSchedule";
 import StudentClass from "components/Student/class/StudentClass";
 import UnattendedPage from "components/Student/unattended/UnattendedPage";
-import AttendancePage from "../components/Proffessor/attendance/AttendancePage";
+import AttendancePage from "../components/Professor/attendance/AttendancePage";
+import NetworkError from "../components/Errors/Network500";
+import ErrorRedirection from "components/Errors/ErrorRedirection";
 
 const load = () => {
   console.log("loader");
@@ -87,15 +88,15 @@ export default function AppRouter() {
               path=""
               element={<Navigate to="courses" replace />}
             ></Route>
-            {/* <Route path="" element={<Navigate to="courses" replace />}> */}
             <Route index path="courses" element={<StudentCourses />}></Route>
             <Route path="schedule" element={<StudentSchedule />}></Route>
             <Route path="unattended" element={<UnattendedPage />}></Route>
             <Route path="class" element={<StudentClass />}></Route>
-            <Route path="course/:id" element={<StudentCourse />}></Route>
           </Route>
 
           <Route path="*" element={<NotFound404 />} />
+          <Route path="error/:error" element={<ErrorRedirection />} />
+          <Route path="500" element={<NetworkError />} />
         </Routes>
         {/* <ResponsiveDrawer /> */}
       </UserContextProvider>

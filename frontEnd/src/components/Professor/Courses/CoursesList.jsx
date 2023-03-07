@@ -23,7 +23,7 @@ export default function InteractiveList() {
 
   return (
     <Box>
-      <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
+      <Typography textAlign="center" variant="h6" component="div">
         Courses
       </Typography>
       <Box sx={{ height: 300, overflow: "auto" }}>
@@ -56,9 +56,7 @@ export default function InteractiveList() {
                 );
               })
             ) : (
-              <Typography style={{ textAlign: "center" }}>
-                courses yet
-              </Typography>
+              <Typography textAlign="center">courses yet</Typography>
             )
           ) : (
             "Loader..."

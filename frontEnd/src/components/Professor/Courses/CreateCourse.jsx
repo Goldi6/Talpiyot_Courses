@@ -85,7 +85,7 @@ export default function CreateCourseForm() {
       style={{ padding: "1rem", paddingBottom: "3rem" }}
     >
       <Stack spacing={2}>
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
+        <Typography variant="h5" textAlign="center">
           Create new Course
         </Typography>
 

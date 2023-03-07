@@ -12,7 +12,7 @@ export default function StudentList() {
 
   return (
     <Box>
-      <Typography sx={{ textAlign: "center" }} variant="h6" component="div">
+      <Typography textAlign="center" variant="h6" component="div">
         Students
       </Typography>
       <Box sx={{ height: 300, overflow: "auto" }}>
@@ -23,9 +23,7 @@ export default function StudentList() {
                 return <StudentListItem key={i} listItem={listItem} />;
               })
             ) : (
-              <Typography style={{ textAlign: "center" }}>
-                courses yet
-              </Typography>
+              <Typography textAlign="center">courses yet</Typography>
             )
           ) : (
             "Loader..."

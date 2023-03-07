@@ -30,7 +30,7 @@ export default function NestedList() {
 
   return (
     <div>
-      <Typography variant="h5" sx={{ textAlign: "center" }}>
+      <Typography variant="h5" textAlign="center">
         Participants
       </Typography>
       <List
