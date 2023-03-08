@@ -49,7 +49,7 @@ function HeaderLoader() {
               </>
             ) : (
               <Box sx={{ flexGrow: 0 }}>
-                <Typography textAlign="center">
+                <Typography textAlign="center" sx={{ cursor: "pointer" }}>
                   <NavLink
                     to="/login"
                     className={({ isActive }) =>
