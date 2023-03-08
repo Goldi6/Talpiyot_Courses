@@ -100,7 +100,7 @@ export default function UserPagesNav() {
           textDecoration: "none",
         }}
       >
-        LOGO
+        Courses
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
         {pages.map((page) => {
