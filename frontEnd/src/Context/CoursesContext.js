@@ -23,9 +23,9 @@ export default function CoursesContextProvider(props) {
           if (isComponentExists) listDispatch(initItemList_Action(dataList));
       })
       .catch((error) => {
-        navigate("/NotFound404", { replace: true, state: { error: error } });
-        //TODO: handle error
-        console.log(error);
+        navigate(`/error/${error.message}`, {
+          replace: true,
+        });
       });
 
     return () => {
