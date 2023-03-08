@@ -9,7 +9,6 @@ export const saveUserOnCookie = (userData) => {
     sameSite: "strict",
     secure: true,
   });
-  console.log(Cookies.get(USER_DATA));
 };
 
 export const deleteUserFromCookie = () => {

@@ -1,35 +1,13 @@
-import axios from "axios";
-import { getTokenFromCookie } from "../Cookies/cookies";
-import { AUTH_Header } from "./headers";
-import PassErrorMessage from "../errorHandlers/passErrorMessage";
+import { axiosRequest } from "./axiosRequest";
 
-const path = process.env.REACT_APP_PATH;
-
-export const getAttendanceData = async () => {
-  try {
-    const req = await axios.get(`${path}/attendance`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return PassErrorMessage(error);
-  }
+export const getAllAttendances = async () => {
+  return await axiosRequest("get", "/attendance", true);
 };
 
-export const GetClassAttendance = async (courseId, scheduleIds) => {
-  if (scheduleIds.length === 0) return [];
-  try {
-    const req = await axios.post(
-      `${path}/attendance/${courseId}`,
-      { classes: scheduleIds },
-      {
-        headers: AUTH_Header(getTokenFromCookie()),
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return PassErrorMessage(error);
-  }
+export const getCourseAttendance = async (courseId, classes) => {
+  //TODO client data from the course
+  if (classes.length === 0) return [];
+  return await axiosRequest("post", `/attendance/${courseId}`, true, {
+    classes,
+  });
 };

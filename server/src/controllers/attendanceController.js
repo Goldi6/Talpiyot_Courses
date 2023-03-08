@@ -7,9 +7,8 @@ const Attendant = require("../models/attendantsModel");
 const { getSimpleDate } = require("../utils/dates");
 
 //TODO: fix to get convention, after changing Attendance Model and remove schedule req.body
-exports.get_course_attendance = async (req, res, next) => {
+exports.getCourseAttendance = async (req, res, next) => {
   const courseId = req.params.courseId;
-
   const { classes } = req.body;
 
   try {
@@ -32,7 +31,7 @@ exports.get_course_attendance = async (req, res, next) => {
 };
 
 //TODO: make simpler after model change
-exports.get_all_attendances = async (req, res, next) => {
+exports.getAllAttendances = async (req, res, next) => {
   const attendants = await Attendant.aggregate([
     {
       $group: {

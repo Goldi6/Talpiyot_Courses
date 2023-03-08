@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { GetClassAttendance } from "server/attendance";
+import { getCourseAttendance } from "server/attendance";
 import { CourseContext } from "Context/courseContext";
 import { isStartDateBeforeEndDate } from "utils/dates";
 import SecondLevelCollapse from "components/Professor/attendance/secondLevelList";
@@ -23,7 +23,7 @@ export default function ClassAttendance() {
     let rendered = true;
     const scheduleIds = passedClasses.map((classData) => classData.id);
     if (rendered) {
-      GetClassAttendance(courseData.id, scheduleIds)
+      getCourseAttendance(courseData.id, scheduleIds)
         .then((data) => {
           let classAttendances = [];
           if (data.length > 0) {

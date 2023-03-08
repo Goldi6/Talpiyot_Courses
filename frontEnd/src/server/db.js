@@ -1,199 +1,52 @@
-import axios from "axios";
-import { getTokenFromCookie } from "../Cookies/cookies";
-import { AUTH_Header } from "./headers";
-import passErrorMessage from "errorHandlers/passErrorMessage";
+import { axiosRequest } from "./axiosRequest";
 
-const path = process.env.REACT_APP_PATH;
-
-export const getList = async (type_path) => {
-  //  console.log("GETTER" + type_path);
-  try {
-    const req = await axios.get(`${path}/professor/${type_path}`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
-};
 export const getCourses = async () => {
-  try {
-    const req = await axios.get(`${path}/courses`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/courses`, true);
 };
 export const getStudents = async () => {
-  //  console.log("GETTER" + type_path);
-  try {
-    const req = await axios.get(`${path}/users/students`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/users/students`, true);
 };
 
 export const deleteItem = async (id, from_path) => {
-  try {
-    const req = await axios.delete(`${path}/${from_path}/${id}`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("delete", `/${from_path}/${id}`, true);
 };
 
 export const createCourse = async (courseData) => {
-  try {
-    const req = await axios.post(`${path}/courses`, courseData, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("post", `/courses`, true, courseData);
 };
 
 export const getCourse = async (id) => {
-  const reqPath = `${path}/courses/${id}`;
-  try {
-    const req = await axios.get(reqPath, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/courses/${id}`, true);
 };
 
 export const addStudentToCourse = async (course_id, student_id) => {
-  // "addStudent / removeStudent"
-  try {
-    const router_path = `${path}/courses/${course_id}/students/${student_id}`;
-
-    const AuthHeader = AUTH_Header(getTokenFromCookie());
-
-    const req = await axios.post(
-      router_path,
-      {},
-      {
-        headers: { ...AuthHeader },
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest(
+    "post",
+    `/courses/${course_id}/students/${student_id}`,
+    true
+  );
 };
-
-export const deleteStudentFromCourse = async (course_id, student_id) => {
-  // previous version used patch for both delete and post actions, editCourseStudentList() :"addStudent / removeStudent"
-  try {
-    const router_path = `${path}/courses/${course_id}/students/${student_id}`;
-
-    const AuthHeader = AUTH_Header(getTokenFromCookie());
-
-    const req = await axios.delete(
-      router_path,
-
-      {
-        headers: { ...AuthHeader },
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
-};
-
 export const deleteClassFromCourse = async (course_id, class_id) => {
-  try {
-    const router_path = `${path}/courses/${course_id}/class/${class_id}`;
-
-    const AuthHeader = AUTH_Header(getTokenFromCookie());
-
-    const req = await axios.delete(
-      router_path,
-
-      {
-        headers: { ...AuthHeader },
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest(
+    "delete",
+    `/courses/${course_id}/class/${class_id}`,
+    true
+  );
+};
+export const deleteStudentFromCourse = async (course_id, student_id) => {
+  return axiosRequest(
+    "delete",
+    `/courses/${course_id}/student/${student_id}`,
+    true
+  );
 };
 
-export const addCourseSchedule = async ({
+export const addClassToCourseSchedule = async ({
   courseId,
   date,
   startTime,
   endTime,
 }) => {
-  console.log(courseId);
-  try {
-    const router_path = `${path}/courses/${courseId}/class`;
-
-    const AuthHeader = AUTH_Header(getTokenFromCookie());
-
-    const req = await axios.post(
-      router_path,
-      { courseId, date, startTime, endTime },
-      {
-        headers: { ...AuthHeader },
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  const body = { courseId, date, startTime, endTime };
+  return axiosRequest("post", `/courses/${courseId}/class`, true, body);
 };
-
-export const updateCourseSchedule = async (
-  { courseId, date, startTime, endTime },
-  action
-) => {
-  // "addClass / removeClass"
-
-  try {
-    const router_path = `${path}/course/${action}/${courseId}`;
-
-    const AuthHeader = AUTH_Header(getTokenFromCookie());
-
-    const req = await axios.post(
-      router_path,
-      { courseId, date, startTime, endTime },
-      {
-        headers: { ...AuthHeader },
-      }
-    );
-
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
-};
-
-//
-//
-////
-//
-//
-//

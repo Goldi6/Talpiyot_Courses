@@ -4,7 +4,7 @@ const Attendant = require("../models/attendantsModel");
 
 const conn = require("../db/mongoose");
 
-exports.post_addClassToCourse = async (req, res, next) => {
+exports.addClassToCourseSchedule = async (req, res, next) => {
   //const _id = req.params["courseId"];
   const _id = req.courseId;
   const ScheduleData = req.body;
@@ -51,15 +51,19 @@ exports.post_addClassToCourse = async (req, res, next) => {
   }
 };
 
-exports.delete_removeClassFromCourse = async (req, res, next) => {
+exports.removeClassFromCourseSchedule = async (req, res, next) => {
   //const course_id = req.params["courseId"];
-  const course_id = req.params.courseId;
+  const course_id = req.courseId;
   const schedule_id = req.params["classId"];
 
   const session = await conn.startSession();
 
   try {
     const course = await Course.findById(course_id);
+    if (!course) {
+      session.endSession();
+      return next(course);
+    }
     course.schedule = course.schedule.filter((id) => id !== schedule_id);
     //
 

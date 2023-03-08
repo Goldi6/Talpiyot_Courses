@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
-import { getAttendanceData } from "server/attendance";
+import { getAllAttendances } from "server/attendance";
 import CustomizedCollapse from "./ThreeLevelSlideList";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,7 @@ export default function AttendancePage() {
   useEffect(() => {
     let requested = true;
     if (requested) {
-      getAttendanceData()
+      getAllAttendances()
         .then((data) => {
           setAttendanceData(data);
         })

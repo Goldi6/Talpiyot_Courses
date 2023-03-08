@@ -4,10 +4,9 @@ import { getTokenFromCookie } from "../Cookies/cookies";
 import { AUTH_Header } from "./headers";
 import { returnUserDataSet } from "utils/userDataSet";
 import authErrorHandler from "errorHandlers/authErrors";
-import passErrorMessage from "errorHandlers/passErrorMessage";
+import { axiosRequest } from "./axiosRequest";
 const path = process.env.REACT_APP_PATH;
 
-////////
 export const createUser = async ({
   firstName,
   lastName,
@@ -15,18 +14,18 @@ export const createUser = async ({
   password,
   role,
 }) => {
+  const body = {
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+  };
+
   try {
-    const res = await Axios.post(
-      `${path}/users`,
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-        role,
-      },
-      { headers: AUTH_Header(getTokenFromCookie()) }
-    );
+    const res = await Axios.post(`${path}/users`, body, {
+      headers: AUTH_Header(getTokenFromCookie()),
+    });
 
     return { ...returnUserDataSet(res.data) };
   } catch (err) {
@@ -34,11 +33,12 @@ export const createUser = async ({
   }
 };
 export const login = async (email, password) => {
+  const body = {
+    email,
+    password,
+  };
   try {
-    const res = await Axios.post(`${path}/login`, {
-      email,
-      password,
-    });
+    const res = await Axios.post(`${path}/login`, body);
 
     return {
       token: res.data.token,
@@ -50,13 +50,5 @@ export const login = async (email, password) => {
 };
 
 export const logout = async () => {
-  try {
-    const res = await Axios.get(`${path}/logout`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-
-    return res.data;
-  } catch (err) {
-    passErrorMessage(err);
-  }
+  return axiosRequest("get", `/logout`, true);
 };

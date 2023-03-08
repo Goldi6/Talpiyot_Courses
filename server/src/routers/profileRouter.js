@@ -4,7 +4,7 @@ const router = express.Router();
 const profileController = require("../controllers/profileController");
 
 router.patch(
-  "/schedule/:classId/attend/:attendanceId",
+  "/class/:classId/attend/:attendanceId",
   profileController.attendOnTime
 );
 
@@ -16,10 +16,10 @@ router.get("/schedule", profileController.getUserSchedule);
 
 router.get("/class", profileController.getTodaysClassesForUser);
 
-router.get("/unattendedClasses", profileController.getAllUnattendedClasses);
+router.get("/absences", profileController.getAllUnattendedClasses);
 
 router.post(
-  "/attendance/:attendanceId/absenceReason",
+  "/attend/:attendanceId/absenceReason",
   profileController.postAbsenceReason
 );
 

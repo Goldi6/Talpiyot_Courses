@@ -1,11 +1,5 @@
 const express = require("express");
 const Course = require("../models/courseModel");
-const auth = require("../middleware/auth");
-const { verifyRequestFields } = require("../middleware/modelFieldsVerifiers");
-const verifyProfessor = require("../middleware/verifyProfessor");
-const Schedule = require("../models/scheduleModel");
-const User = require("../models/userModel");
-const CustomError = require("../utils/customError");
 const Attendant = require("../models/attendantsModel");
 
 const router = express.Router();
@@ -46,18 +40,15 @@ async function createAttendances(courses) {
   await createAttendances(courses.slice(1));
 }
 
-router.post(
-  "/helpers/createAttendanceForCourse",
-  async function (req, res, next) {
-    const courses = await Course.find().populate({
-      path: "schedule",
-      select: "id date",
-    });
+router.post("/helpers/createAttendanceForCourse", async function (req, res) {
+  const courses = await Course.find().populate({
+    path: "schedule",
+    select: "id date",
+  });
 
-    createAttendances(courses);
+  createAttendances(courses);
 
-    res.send(courses);
-  }
-);
+  res.send(courses);
+});
 
 module.exports = router;

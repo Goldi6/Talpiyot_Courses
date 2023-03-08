@@ -1,12 +1,11 @@
 const express = require("express");
 
-
 const router = express.Router();
 
 const attendanceController = require("../controllers/attendanceController");
 
-router.post("/:courseId", attendanceController.get_course_attendance);
+router.post("/:courseId", attendanceController.getCourseAttendance);
 
-router.get("", attendanceController.get_all_attendances);
+router.get("", attendanceController.getAllAttendances);
 
 module.exports = router;

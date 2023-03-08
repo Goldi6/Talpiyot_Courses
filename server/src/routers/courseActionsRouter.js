@@ -9,18 +9,14 @@ const router = express.Router();
 
 router
   .route("/students/:studentId")
-  .post(courseStudentActionsController.post_addStudentToCourse)
-  .delete(courseStudentActionsController.delete_removeStudentFromCourse);
+  .post(courseStudentActionsController.addStudentToCourse)
+  .delete(courseStudentActionsController.removeStudentFromCourse);
 
-router.post(
-  "/class",
-  //verifyRequestFields(Schedule),
-  courseClassesActionsController.post_addClassToCourse
-);
+router.post("/class", courseClassesActionsController.addClassToCourseSchedule);
 
 router.delete(
   "/class/:classId",
-  courseClassesActionsController.delete_removeClassFromCourse
+  courseClassesActionsController.removeClassFromCourseSchedule
 );
 
 module.exports = router;

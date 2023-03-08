@@ -1,115 +1,46 @@
-import axios from "axios";
-import { getTokenFromCookie } from "../Cookies/cookies";
-import { AUTH_Header } from "./headers";
 import { returnUserDataSet } from "utils/userDataSet";
-import passErrorMessage from "errorHandlers/passErrorMessage";
 
-const path = process.env.REACT_APP_PATH;
+import { axiosRequest } from "./axiosRequest";
 
 export const updateProfile = async (user) => {
-  try {
-    const res = await axios.patch(
-      `${path}/users`,
-      { ...user },
-      {
-        headers: AUTH_Header(getTokenFromCookie()),
-      }
-    );
-    console.log(res.data);
-    return {
-      token: res.data.token,
-      user: returnUserDataSet(res.data),
-    };
-  } catch (err) {
-    return passErrorMessage(err);
-  }
+  return await axiosRequest("patch", "/users", true, { user }).then((data) => ({
+    token: data.token,
+    user: returnUserDataSet(data),
+  }));
 };
 
 export async function getUserCurses() {
-  try {
-    const req = await axios.get(`${path}/my-profile/courses`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/my-profile/courses`, true);
 }
 export async function getUserSchedule() {
-  try {
-    const req = await axios.get(`${path}/my-profile/schedule`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/my-profile/schedule`, true);
 }
 export async function getNextClassForUser() {
-  try {
-    const req = await axios.get(`${path}/my-profile/class`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-    console.log(req.data);
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/my-profile/class`, true);
 }
 //
 //
 export async function attendOnTime(classID, attendanceID) {
-  try {
-    const req = await axios.patch(
-      `${path}/my-profile/schedule/${classID}/attend/${attendanceID}`,
-      {},
-      {
-        headers: AUTH_Header(getTokenFromCookie()),
-      }
-    );
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest(
+    "patch",
+    `/my-profile/schedule/${classID}/attend/${attendanceID}`,
+    true
+  );
 }
 
 export async function markAttendedAfterClassWasOver(attendanceId) {
-  try {
-    const req = await axios.patch(
-      `${path}/my-profile/attend/${attendanceId}`,
-      {},
-      {
-        headers: AUTH_Header(getTokenFromCookie()),
-      }
-    );
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("patch", `/my-profile/attend/${attendanceId}`, true);
 }
 
 export async function submitAbsenceReason(attendanceID, reason) {
-  try {
-    const req = await axios.post(
-      `${path}/my-profile/attendance/${attendanceID}/absenceReason`,
-      { reason },
-      {
-        headers: AUTH_Header(getTokenFromCookie()),
-      }
-    );
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest(
+    "post",
+    `/my-profile/attendance/${attendanceID}/absenceReason`,
+    true,
+    { reason }
+  );
 }
 
 export async function getUnattendedClasses() {
-  try {
-    const req = await axios.get(`${path}/my-profile/unattendedClasses`, {
-      headers: AUTH_Header(getTokenFromCookie()),
-    });
-    return req.data;
-  } catch (error) {
-    return passErrorMessage(error);
-  }
+  return axiosRequest("get", `/my-profile/unattendedClasses`, true);
 }

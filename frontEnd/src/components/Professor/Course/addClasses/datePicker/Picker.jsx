@@ -3,7 +3,7 @@ import PickDate from "./PickDate";
 import PickTime from "./PickTime";
 import { getDateAndTimesFromMUI, isStartDateBeforeEndDate } from "utils/dates";
 import { CourseContext } from "Context/courseContext";
-import { addCourseSchedule } from "server/db";
+import { addClassToCourseSchedule } from "server/db";
 import { Button } from "@mui/material";
 import { updateClassesInCourse } from "Reducers/Actions/CourseAction";
 
@@ -47,7 +47,7 @@ export default function Picker() {
       endTime,
     };
 
-    addCourseSchedule(scheduleData).then((res) => {
+    addClassToCourseSchedule(scheduleData).then((res) => {
       courseDispatch(updateClassesInCourse({ ...res }));
     });
   }

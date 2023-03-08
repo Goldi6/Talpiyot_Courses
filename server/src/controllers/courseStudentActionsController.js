@@ -6,7 +6,7 @@ const { createSetWithNewValue } = require("../utils/funcs");
 
 const conn = require("../db/mongoose");
 
-exports.post_addStudentToCourse = async (req, res, next) => {
+exports.addStudentToCourse = async (req, res, next) => {
   const course_id = req.courseId;
   // const course_id = req.params["courseId"];
 
@@ -67,7 +67,7 @@ exports.post_addStudentToCourse = async (req, res, next) => {
   }
 };
 
-exports.delete_removeStudentFromCourse = async (req, res, next) => {
+exports.removeStudentFromCourse = async (req, res, next) => {
   // const course_id = req.params["courseId"];
   const course_id = req.courseId;
   const student_id = req.params["studentId"];
