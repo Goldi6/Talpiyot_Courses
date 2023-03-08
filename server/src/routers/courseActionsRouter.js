@@ -5,8 +5,6 @@ const courseClassesActionsController = require("../controllers/courseScheduleAct
 
 const router = express.Router();
 
-//TODO : fix routes after model change
-
 router
   .route("/students/:studentId")
   .post(courseStudentActionsController.addStudentToCourse)
