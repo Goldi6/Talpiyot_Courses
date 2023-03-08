@@ -20,7 +20,6 @@ export default function ProfileMenu() {
 
   //MUI
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  console.log(anchorElUser);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -32,7 +31,6 @@ export default function ProfileMenu() {
   const onClickLogout = () => {
     logout()
       .then((message) => {
-        console.log(message);
         userDispatch(userLogout_Action());
         deleteUserFromCookie();
         navigate("/home");
@@ -40,7 +38,6 @@ export default function ProfileMenu() {
       .catch((error) => {
         userDispatch(userLogout_Action());
         deleteUserFromCookie();
-        console.log(error);
       });
   };
 
