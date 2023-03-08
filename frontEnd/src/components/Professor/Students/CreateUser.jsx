@@ -37,7 +37,12 @@ export default function CreateUser(props) {
   const [lastName, setLastName] = useState("");
 
   const isSubmitDisabled = () => {
-    return email === "" || firstName === "" || lastName === "";
+    return (
+      (email === "" || firstName === "" || lastName === "") &&
+      inputValid.email &&
+      inputValid.firstName &&
+      inputValid.lastName
+    );
   };
 
   const onInputEmailInput = (event) => {
