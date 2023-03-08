@@ -10,6 +10,9 @@ export default function ErrorRedirection() {
     if (error === "ERR_NETWORK") {
       navigate("/500");
     }
+    if (error === "DataNotFound") {
+      navigate("/404");
+    }
   }, [navigate, error]);
 
   return <div></div>;

@@ -14,6 +14,7 @@ export default function NotFound404() {
       }}
     >
       <Typography variant="h1">404</Typography>
+      <Typography variant="h3">Requested page not found</Typography>
     </Container>
   );
 }

@@ -111,6 +111,7 @@ export default function CreateUser(props) {
         for (const key in emptyMessages) {
           emptyMessages[key] = "";
         }
+        //TODO fix errors color
         setInvalidInput_message({ ...emptyMessages, ...errorMessage });
         const keys = Object.keys(invalidInput_message);
 
@@ -151,7 +152,6 @@ export default function CreateUser(props) {
           error={!inputValid.firstName}
           label="Student First Name"
           type="text"
-          // autoComplete="current-password"
           variant="outlined"
           helperText={invalidInput_message.firstName}
           InputProps={{

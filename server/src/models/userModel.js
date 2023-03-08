@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
       validate(value) {
-        console.log("validator");
         const regExp = /^[a-zA-Z]+$/;
         if (!regExp.test(value)) throw new Error("should contain only letters");
       },
@@ -37,7 +36,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: true,
       validate(value) {
-        console.log("validator");
         const regExp = /^[a-zA-Z]+/;
         if (!regExp.test(value)) throw new Error("should contain only letters");
       },
@@ -99,7 +97,7 @@ const userSchema = new mongoose.Schema(
 );
 
 //middlewares
-///TODO: generate random password and send email
+///?TODO: generate random password and send email
 
 userSchema.pre("save", async function (next) {
   const user = this;

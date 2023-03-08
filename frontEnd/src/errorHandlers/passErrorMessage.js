@@ -10,10 +10,15 @@ export default function passErrorMessage(error) {
 
     const responseData = error.response.data;
 
-    if (responseData === "UserNotFound") throw new Error(responseData);
-    if (responseData === "InternalError") throw new Error(responseData);
     if (responseData.name === "DuplicateValue_email")
       throw new Error(responseData.name);
+
+    if (responseData.includes("ValidationError")) throw new Error(responseData);
+
+    if (responseData === "DataNotFound") throw new Error(responseData);
+
+    if (responseData === "UserNotFound") throw new Error(responseData);
+    if (responseData === "InternalError") throw new Error(responseData);
 
     if (responseData === "TokenExpired") {
       deleteUserFromCookie();

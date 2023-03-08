@@ -18,9 +18,7 @@ export const axiosRequest = async (method, url, authorize, clientData = {}) => {
 
       headers: authorize,
     });
-    if (req.status === 200) {
-      return req.data;
-    }
+    return req.data;
   } catch (err) {
     return passErrorMessage(err);
   }
