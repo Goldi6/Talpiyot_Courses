@@ -21,9 +21,8 @@ export default function ClassAttendance() {
 
   useEffect(() => {
     let rendered = true;
-    const scheduleIds = passedClasses.map((classData) => classData.id);
     if (rendered) {
-      getCourseAttendance(courseData.id, scheduleIds)
+      getCourseAttendance(courseData.id)
         .then((data) => {
           let classAttendances = [];
           if (data.length > 0) {

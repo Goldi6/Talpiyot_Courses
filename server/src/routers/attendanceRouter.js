@@ -4,7 +4,7 @@ const router = express.Router();
 
 const attendanceController = require("../controllers/attendanceController");
 
-router.post("/:courseId", attendanceController.getCourseAttendance);
+router.get("/:courseId", attendanceController.getCourseAttendance);
 
 router.get("", attendanceController.getAllAttendances);
 

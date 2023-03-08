@@ -9,7 +9,19 @@ const { getSimpleDate } = require("../utils/dates");
 //TODO: fix to get convention, after changing Attendance Model and remove schedule req.body
 exports.getCourseAttendance = async (req, res, next) => {
   const courseId = req.params.courseId;
-  const { classes } = req.body;
+
+  const course = await Course.findById(courseId).populate("schedule");
+
+  const now = new Date();
+  const pastClasses = course.schedule.filter((classObj) => {
+    console.log(classObj);
+    if (classObj.date > now) return false;
+    else return true;
+  });
+
+  const classes = pastClasses.map((classObj) => {
+    return classObj.id;
+  });
 
   try {
     const passSchedulePromises = classes.map(async (classId) => {
