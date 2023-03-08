@@ -92,23 +92,20 @@ export default function CreateUser(props) {
     e.preventDefault();
 
     const generatePassword = () => {
-      //FIXME:IMPLEMENT password generator
+      //?TODO:IMPLEMENT password generator
       const password = "123QWEasd";
 
       return password;
     };
 
     const password = generatePassword();
-    //FIXME:implement user role picker
+    //?TODO:implement user role picker
     createUser({ email, firstName, lastName, password, role: "student" })
       .then((userData) => {
-        console.log("DATA FROM SERV : " + userData);
         studentsDispatch(addItem_Action(userData));
       })
       .catch((err) => {
-        console.log(err);
-        //TODO:login errors
-        const errorMessage = authErrorHandler(err);
+        const errorMessage = authErrorHandler(err.message);
 
         const emptyMessages = { ...invalidInput_message };
         for (const key in emptyMessages) {

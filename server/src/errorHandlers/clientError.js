@@ -46,13 +46,9 @@ const clientErrorHandler = (err, req, res, next) => {
 
   switch (err.name) {
     case "UserNotFound":
-      return res.status(404).send(
-        new CustomError({
-          message: "user not found",
-          name: "UserNotFound",
-          status: 404,
-        })
-      );
+      return res.status(404).send(err.name);
+    case "DuplicateValue_email":
+      return res.status(400).send(err.name);
     case "CastError":
       // return res.status(400).send(
       //   new CustomError({
@@ -156,11 +152,9 @@ const clientErrorHandler = (err, req, res, next) => {
   // }
 
   if (err instanceof jwt.TokenExpiredError) {
-    console.log("TTT");
     return res.status(400).send("TokenExpired");
   }
   if (err instanceof jwt.JsonWebTokenError) {
-    console.log("TTT");
     return res.status(400).send("TokenExpired");
   }
 

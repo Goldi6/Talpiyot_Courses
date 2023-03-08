@@ -1,32 +1,34 @@
 import { deleteUserFromCookie } from "Cookies/cookies";
 
-export default function passErrorMessage(err) {
-  console.log(err);
+export default function passErrorMessage(error) {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
 
-  if (err.code === "ERR_NETWORK") throw new Error("ERR_NETWORK");
+    const responseData = error.response.data;
 
-  const errResponse = err.response;
-  console.log(errResponse);
-  //TODO handle errors
-
-  if (errResponse.data !== undefined) {
-    const responseData = errResponse.data;
+    if (responseData === "UserNotFound") throw new Error(responseData);
+    if (responseData === "InternalError") throw new Error(responseData);
+    if (responseData.name === "DuplicateValue_email")
+      throw new Error(responseData.name);
 
     if (responseData === "TokenExpired") {
       deleteUserFromCookie();
       return;
     }
-  }
-  //console.log(err.data);
-  if (errResponse.name) {
-    throw new Error(err.data.name);
-  }
-  if (err.code === "ERR_NETWORK") {
-    throw new Error("ERR_NETWORK");
+  } else if (error.request) {
+    // The request was made but no response was received
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // http.ClientRequest in node.js
+    console.log(error.request);
+
+    if (error.code === "ERR_NETWORK") throw new Error("ERR_NETWORK");
   } else {
-    if (err.response && err.response.status === 400) {
-      // throw new Error(err.response.data.error.message);
-    }
+    // Something happened in setting up the request that triggered an Error
+    console.log("Error", error.message);
   }
-  //window.location.assign("/NotFound404");
+  console.log(error.config);
 }

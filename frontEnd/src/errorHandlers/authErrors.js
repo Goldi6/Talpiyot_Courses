@@ -1,8 +1,4 @@
 export default function authErrorHandler(err) {
-  console.log(err);
-
-  err = err.message;
-  console.log(err);
   switch (err) {
     case "DuplicateValue_email":
       return {

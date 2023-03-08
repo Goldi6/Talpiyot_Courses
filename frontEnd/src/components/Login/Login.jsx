@@ -87,8 +87,6 @@ export default function Login(props) {
 
     login(email, password)
       .then((userData) => {
-        console.log("DATA FROM SERV : " + userData);
-
         userDispatch(userLogin_Action(userData));
 
         saveUserOnCookie(userData);
@@ -96,10 +94,7 @@ export default function Login(props) {
         navigate(path, { replace: true });
       })
       .catch((err) => {
-        console.log(err);
-        //TODO:login errors
-        const errorMessage = authErrorHandler(err);
-        console.log(errorMessage);
+        const errorMessage = authErrorHandler(err.message);
         const emptyMessages = { ...invalidInput_message };
         for (const key in emptyMessages) {
           emptyMessages[key] = "";
