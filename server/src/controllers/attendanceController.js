@@ -14,7 +14,6 @@ exports.getCourseAttendance = async (req, res, next) => {
 
   const now = new Date();
   const pastClasses = course.schedule.filter((classObj) => {
-    console.log(classObj);
     if (classObj.date > now) return false;
     else return true;
   });
