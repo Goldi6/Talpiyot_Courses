@@ -6,7 +6,7 @@ import { login } from "server/auth";
 import { saveUserOnCookie } from "Cookies/cookies";
 import authErrorHandler from "errorHandlers/authErrors";
 import { userLogin_Action } from "Reducers/Actions/UserActions";
-import MuiLoginForm from "components/Mui_Form/forms/MuiLoginForm";
+import MuiLoginForm from "components/Mui_Form/forms/LoginForm/MuiLoginForm";
 
 export default function Login(props) {
   const { userDispatch } = useContext(UserContext);
@@ -46,6 +46,7 @@ export default function Login(props) {
       <MuiLoginForm
         loginFunc={loginFunc}
         generalErrorMessage={generalErrorMessage}
+        resetPasswordFunc={(email) => {}}
       />
     </Container>
   );

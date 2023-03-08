@@ -2,9 +2,9 @@ import React from "react";
 import MuiInput from "./MUIInput";
 import validator from "validator";
 import { Button } from "@mui/material";
-import EmailMuiInput from "./standartInputs/EmailMuiInput";
-import DateMuiInput from "./standartInputs/DateMuiInput";
-import PasswordMuiInput from "./standartInputs/PasswordMuiInput";
+import EmailMuiInput from "./standardInputs/EmailMuiInput";
+import DateMuiInput from "./standardInputs/DateMuiInput";
+import PasswordMuiInput from "./standardInputs/PasswordMuiInput";
 
 export default function MuiForm() {
   const [email, setEmail] = React.useState("");
