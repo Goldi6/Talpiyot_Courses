@@ -51,15 +51,16 @@ export default function MuiUpdateProfileForm({
     updateFunc(data);
   };
 
-  const ageValidation = [
-    {
+  const ageValidation = {
       func: (val) => {
         return isAtLeastAge(val, 18);
       },
       message: "You must be at least 18 years old to update your profile.",
     },
-  ];
-
+    nameValidation = {
+      func: (value) => !value.includes("admin"),
+      message: "came cannot include admin",
+    };
 
   return (
     <Box
@@ -86,6 +87,7 @@ export default function MuiUpdateProfileForm({
         setIsReady={setIsReadyFirstName}
         shrinkLabel={shrinkLabel}
         isRequired={false}
+        additionalValidation={[nameValidation]}
       />
       <AlphaMuiInput
         variant={variant}
@@ -95,6 +97,7 @@ export default function MuiUpdateProfileForm({
         setIsReady={setIsReadyLastName}
         shrinkLabel={shrinkLabel}
         isRequired={false}
+        additionalValidation={[nameValidation]}
       />
       <EmailMuiInput
         variant={variant}
@@ -113,7 +116,7 @@ export default function MuiUpdateProfileForm({
         setValue={setBirthday}
         setIsReady={setIsReadyBirthday}
         shrinkLabel={shrinkLabel}
-        additionalValidation={ageValidation}
+        additionalValidation={[ageValidation]}
       />
       {errorMessage !== "" && (
         <FormHelperText error>{errorMessage}</FormHelperText>

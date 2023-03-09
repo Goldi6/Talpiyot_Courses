@@ -1,32 +1,19 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { convertToMuiDateFormat } from "utils/dates";
-//NOTE!!!:when creating library add the convertToMui date function
 //NOTE: the only state you define out of this field is the [readyToSubmit,setReadyToSubmit]
 
 //NOTE: validators is an array of objects with the following properties: {func: function,message: string}:
-export default function MuiInput({
-  setValue,
-  setIsReady,
-  validators,
-  name = "",
-  label = "Text Input",
-  isRequired = false,
-  type = "text",
-  icon = undefined,
-  variant = "outlined",
-  shrinkLabel = false,
-  defaultValue = undefined,
-  placeholder = "",
-  passwordVerifyRepeat = false,
-}) {
+
+export default function MuiInput({ setValue, setIsReady, ...props }) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  //only for password match
+  //used only double password field
   const [password, setPassword] = useState("");
   const [errorMessageMatch, setErrorMessageMatch] = useState("");
 
-  if (type === "date" && defaultValue !== "") {
+  let defaultValue = props.defaultValue;
+  if (props.type === "date" && defaultValue !== "") {
     defaultValue = convertToMuiDateFormat(defaultValue);
   }
 
@@ -36,15 +23,15 @@ export default function MuiInput({
       setIsError(false);
       setErrorMessage("");
       setValue("");
-      if (isRequired) setIsReady(false);
+      if (props.isRequired) setIsReady(false);
       else setIsReady(true);
 
       return;
     }
 
-    if (passwordVerifyRepeat) {
+    if (props.passwordVerifyRepeat) {
       let valid = true;
-      for (const validator of validators) {
+      for (const validator of props.validators) {
         if (validator.func(val)) continue;
         valid = false;
         setIsError(true);
@@ -61,7 +48,7 @@ export default function MuiInput({
       setPassword(val);
     } else {
       let valid = true;
-      for (const validator of validators) {
+      for (const validator of props.validators) {
         if (validator.func(val)) continue;
         valid = false;
         setIsError(true);
@@ -91,7 +78,7 @@ export default function MuiInput({
       } else {
         setErrorMessageMatch("");
       }
-    } else if (passwordsMatch && !isRequired && password === "") {
+    } else if (passwordsMatch && !props.isRequired && password === "") {
       setIsReady(true);
       setValue("");
       setErrorMessageMatch("");
@@ -103,38 +90,39 @@ export default function MuiInput({
     }
   };
 
-  const inputProps = icon
+  const inputProps = props.icon
     ? {
         startAdornment: (
-          <InputAdornment position="start">{icon}</InputAdornment>
+          <InputAdornment position="start">{props.icon}</InputAdornment>
         ),
       }
     : {};
 
-  const inputLabelProps = shrinkLabel || icon ? { shrink: true } : {};
+  const inputLabelProps =
+    props.shrinkLabel || props.icon ? { shrink: true } : {};
   const variantType =
-    variant === "outlined"
+    props.variant === "outlined"
       ? "outlined"
-      : variant === "standard"
+      : props.variant === "standard"
       ? "standard"
       : "filled";
   return (
     <>
       <TextField
-        name={name}
+        name={props.name}
         onInput={onInput}
         error={isError}
-        type={type}
-        label={label}
+        type={props.type}
+        label={props.label}
         variant={variantType}
         helperText={errorMessage}
         InputProps={inputProps}
         InputLabelProps={inputLabelProps}
-        required={isRequired}
+        required={props.isRequired}
         defaultValue={defaultValue}
-        placeholder={placeholder}
+        placeholder={props.placeholder}
       />
-      {passwordVerifyRepeat && (
+      {props.passwordVerifyRepeat && (
         <TextField
           onInput={onInputPasswordsMatch}
           error={errorMessageMatch !== ""}
@@ -144,9 +132,23 @@ export default function MuiInput({
           helperText={errorMessageMatch}
           InputProps={inputProps}
           InputLabelProps={inputLabelProps}
-          required={isRequired}
+          required={props.isRequired}
         />
       )}
     </>
   );
 }
+
+MuiInput.defaultProps = {
+  name: "",
+  label: "Text Input",
+  isRequired: false,
+  type: "text",
+  icon: undefined,
+  variant: "outlined",
+  shrinkLabel: false,
+  defaultValue: undefined,
+  placeholder: "",
+  passwordVerifyRepeat: false,
+  validators: [],
+};

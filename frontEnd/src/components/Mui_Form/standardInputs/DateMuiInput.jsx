@@ -1,7 +1,7 @@
 import React from "react";
 import MuiInput from "../MUIInput";
 
-export default function DateMuiInput(props, { setValue, setValueIsReady }) {
+export default function DateMuiInput({ setValue, setValueIsReady, ...props }) {
   let validators_date = [
     {
       func: (value) => {
