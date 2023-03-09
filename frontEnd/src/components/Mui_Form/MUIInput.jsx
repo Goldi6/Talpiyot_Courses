@@ -23,8 +23,7 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
       setIsError(false);
       setErrorMessage("");
       setValue("");
-      if (props.isRequired) setIsReady(false);
-      else setIsReady(true);
+      setIsReady(false);
 
       return;
     }
@@ -78,8 +77,8 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
       } else {
         setErrorMessageMatch("");
       }
-    } else if (passwordsMatch && !props.isRequired && password === "") {
-      setIsReady(true);
+    } else if (passwordsMatch && password === "") {
+      setIsReady(false);
       setValue("");
       setErrorMessageMatch("");
     } else if (passwordsMatch) {
