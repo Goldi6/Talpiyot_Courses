@@ -2,7 +2,7 @@ import React from "react";
 import AlphaMuiInput from "../../standardInputs/AlphaMuiInput";
 import EmailMuiInput from "components/Mui_Form/standardInputs/EmailMuiInput";
 import DateMuiInput from "components/Mui_Form/standardInputs/DateMuiInput";
-import { Box, Button, FormHelperText, Typography } from "@mui/material";
+import { Box, Button, FormHelperText, Stack, Typography } from "@mui/material";
 import { isAtLeastAge } from "utils/calcAge";
 
 export default function MuiUpdateProfileForm({
@@ -36,6 +36,10 @@ export default function MuiUpdateProfileForm({
     setBirthday("");
     setEmail("");
 
+    setIsReadyFirstName(false);
+    setIsReadyBirthday(false);
+    setIsReadyLastName(false);
+    setIsReadyEmail(false);
     form.reset();
   };
 
@@ -48,7 +52,9 @@ export default function MuiUpdateProfileForm({
     if (isReadyLastName) data = { ...data, lastName };
     if (isReadyEmail) data = { ...data, email };
 
-    updateFunc(data);
+    updateFunc(data).then((toReset) => {
+      if (toReset) reset(e.target);
+    });
   };
 
   const ageValidation = {
@@ -79,51 +85,58 @@ export default function MuiUpdateProfileForm({
       <Typography component="h1" variant="h5" sx={{ pb: 2 }}>
         Update Profile
       </Typography>
-      <AlphaMuiInput
-        variant={variant}
-        placeholder={userData.firstName}
-        label={"First name"}
-        setValue={setFirstName}
-        setIsReady={setIsReadyFirstName}
-        shrinkLabel={shrinkLabel}
-        isRequired={false}
-        additionalValidation={[nameValidation]}
-      />
-      <AlphaMuiInput
-        variant={variant}
-        placeholder={userData.lastName}
-        label={"Last name"}
-        setValue={setLastName}
-        setIsReady={setIsReadyLastName}
-        shrinkLabel={shrinkLabel}
-        isRequired={false}
-        additionalValidation={[nameValidation]}
-      />
-      <EmailMuiInput
-        variant={variant}
-        placeholder={userData.email}
-        label={"New Email"}
-        setValue={setEmail}
-        setIsReady={setIsReadyEmail}
-        shrinkLabel={shrinkLabel}
-        isRequired={false}
-      />
-      <DateMuiInput
-        isRequired={false}
-        variant={variant}
-        defaultValue={userData.birthday}
-        label="Birthday"
-        setValue={setBirthday}
-        setIsReady={setIsReadyBirthday}
-        shrinkLabel={shrinkLabel}
-        additionalValidation={[ageValidation]}
-      />
-      {errorMessage !== "" && (
-        <FormHelperText error>{errorMessage}</FormHelperText>
-      )}
-      <Button type="submit" disabled={submitIsDisabled()}>
-        Update
-      </Button>
+      <Stack gap="0.75rem">
+        <AlphaMuiInput
+          variant={variant}
+          placeholder={userData.firstName}
+          label={"First name"}
+          setValue={setFirstName}
+          setIsReady={setIsReadyFirstName}
+          shrinkLabel={shrinkLabel}
+          isRequired={false}
+          additionalValidation={[nameValidation]}
+        />
+        <AlphaMuiInput
+          variant={variant}
+          placeholder={userData.lastName}
+          label={"Last name"}
+          setValue={setLastName}
+          setIsReady={setIsReadyLastName}
+          shrinkLabel={shrinkLabel}
+          isRequired={false}
+          additionalValidation={[nameValidation]}
+        />
+        <EmailMuiInput
+          variant={variant}
+          placeholder={userData.email}
+          label={"New Email"}
+          setValue={setEmail}
+          setIsReady={setIsReadyEmail}
+          shrinkLabel={shrinkLabel}
+          isRequired={false}
+        />
+        <DateMuiInput
+          isRequired={false}
+          variant={variant}
+          defaultValue={userData.birthday}
+          label="Birthday"
+          setValue={setBirthday}
+          setIsReady={setIsReadyBirthday}
+          shrinkLabel={shrinkLabel}
+          additionalValidation={[ageValidation]}
+        />
+        {errorMessage !== "" && (
+          <FormHelperText error>{errorMessage}</FormHelperText>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={submitIsDisabled()}
+        >
+          Update
+        </Button>
+      </Stack>
     </Box>
   );
 }

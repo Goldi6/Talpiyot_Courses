@@ -13,15 +13,17 @@ export default function Profile() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateFunc = (data) => {
-    updateProfile(data)
+    return updateProfile(data)
       .then((newData) => {
         userDispatch(userUpdateAccount_Action(newData));
         saveUserOnCookie(newData);
+        return true;
       })
       .catch((err) => {
         const errorMessage = authErrorHandler(err.message);
         if (errorMessage.email) setErrorMessage(errorMessage.email);
         if (errorMessage.general) setErrorMessage(errorMessage.general);
+        return false;
       });
   };
 
