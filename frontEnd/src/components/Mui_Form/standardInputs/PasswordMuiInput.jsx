@@ -20,6 +20,7 @@ export default function PasswordMuiInput({
   placeholder = "",
   passwordVerifyRepeat = false,
   icon = <PasswordIcon />,
+  shrinkLabel = false,
 }) {
   if (minLength > 0)
     validators.push({
@@ -40,6 +41,7 @@ export default function PasswordMuiInput({
       icon={icon}
       variant={variant}
       placeholder={placeholder}
+      shrinkLabel={shrinkLabel}
     />
   );
 }

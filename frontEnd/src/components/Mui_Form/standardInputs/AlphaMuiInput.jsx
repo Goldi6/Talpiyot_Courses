@@ -12,11 +12,16 @@ export default function AlphaMuiInput({
   defaultValue = "",
   placeholder = "",
   icon = undefined,
+  shrinkLabel = false,
 }) {
   const validators_alpha = [
     {
       func: (value) => validator.isAlpha(value),
       message: "Please enter only letters",
+    },
+    {
+      func: (value) => !value.includes("admin"),
+      message: "came cannot include admin",
     },
   ];
 
@@ -33,6 +38,7 @@ export default function AlphaMuiInput({
       variant={variant}
       defaultValue={defaultValue}
       placeholder={placeholder}
+      shrinkLabel={shrinkLabel}
     />
   );
 }

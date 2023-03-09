@@ -3,7 +3,7 @@ import { returnUserDataSet } from "utils/userDataSet";
 import { axiosRequest } from "./axiosRequest";
 
 export const updateProfile = async (user) => {
-  return await axiosRequest("patch", "/users", true, { user }).then((data) => ({
+  return await axiosRequest("patch", "/users", true, user).then((data) => ({
     token: data.token,
     user: returnUserDataSet(data),
   }));
