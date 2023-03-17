@@ -28,31 +28,25 @@ const clientErrorHandler = (err, req, res, next) => {
 
   if (err.name === "ValidationError") {
     let message = err.message;
-    console.log(message);
     message = message.replace("User validation failed", err.name);
-    return res.status(400).send(message);
-    // console.log(path);
-    // const failedFields = err.errors;
-    // for (let field in failedFields) {
-    //   field = failedFields[field];
-    //   const path = field.properties.path;
-    //   const kind = field.kind;
-    //   let reason = field.properties.message;
-    //   if (kind !== "user defined") {
-    //     console.log(kind);
-    //     console.log("USERDEFINED");
-    //     const cutIndex = reason.indexOf(")");
-    //     reason = reason.slice(cutIndex + 2);
-    //     console.log(reason);
-    //   }
-    //   if (reason.includes("is required")) {
-    //     reason = "is required";
-    //   }
+    const failedFields = err.errors;
+    const errorsArray = [];
+    for (let field in failedFields) {
+      field = failedFields[field];
+      const path = field.path;
+      const kind = field.kind;
+      let reason = field.properties.message;
+      if (kind === "user defined") {
+        reason = reason.replace("Error: ", "");
+      }
+      if (reason.includes("is required")) {
+        reason = "is required";
+      }
 
-    //   let errObject = { path, reason };
-    //   errorsArray.push(errObject);
-
-    // }
+      let errObject = { path, reason };
+      errorsArray.push(errObject);
+    }
+    return res.status(400).send(errorsArray);
   }
 
   next(err);
