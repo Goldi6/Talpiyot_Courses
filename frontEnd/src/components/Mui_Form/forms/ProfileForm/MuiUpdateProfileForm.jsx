@@ -3,19 +3,22 @@ import AlphaMuiInput from "../../standardInputs/AlphaMuiInput";
 import EmailMuiInput from "components/Mui_Form/standardInputs/EmailMuiInput";
 import DateMuiInput from "components/Mui_Form/standardInputs/DateMuiInput";
 import { Box, Button, FormHelperText, Stack, Typography } from "@mui/material";
-import { isAtLeastAge } from "utils/calcAge";
+import { formReset } from "../utils";
+import { ageValidation, nameValidation } from "../extraValidation";
 
 export default function MuiUpdateProfileForm({
   userData,
+  updateFunc,
   variant = "standard",
   shrinkLabel = true,
-  updateFunc,
   errorMessage,
 }) {
-  const [firstName, setFirstName] = React.useState(userData.firstName);
-  const [lastName, setLastName] = React.useState(userData.lastName);
-  const [email, setEmail] = React.useState(userData.email);
-  const [birthday, setBirthday] = React.useState(userData.birthday);
+  const generalProps = { shrinkLabel, variant, isRequired: false };
+
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [birthday, setBirthday] = React.useState("");
 
   const [isReadyFirstName, setIsReadyFirstName] = React.useState(false);
   const [isReadyLastName, setIsReadyLastName] = React.useState(false);
@@ -24,23 +27,11 @@ export default function MuiUpdateProfileForm({
 
   const submitIsDisabled = () => {
     return !(
-      isReadyFirstName ||
-      isReadyLastName ||
-      isReadyEmail ||
-      isReadyBirthday
+      (isReadyFirstName && firstName !== userData.firstName) ||
+      (isReadyLastName && lastName !== userData.lastName) ||
+      (isReadyEmail && email !== userData.email) ||
+      (isReadyBirthday && birthday !== userData.birthday)
     );
-  };
-  const reset = (form) => {
-    setFirstName("");
-    setLastName("");
-    setBirthday("");
-    setEmail("");
-
-    setIsReadyFirstName(false);
-    setIsReadyBirthday(false);
-    setIsReadyLastName(false);
-    setIsReadyEmail(false);
-    form.reset();
   };
 
   const onSubmitUpdate = (e) => {
@@ -53,20 +44,19 @@ export default function MuiUpdateProfileForm({
     if (isReadyEmail) data = { ...data, email };
 
     updateFunc(data).then((toReset) => {
-      if (toReset) reset(e.target);
+      if (toReset)
+        formReset(
+          e.target,
+          [setFirstName, setLastName, setBirthday, setEmail],
+          [
+            setIsReadyFirstName,
+            setIsReadyBirthday,
+            setIsReadyLastName,
+            setIsReadyEmail,
+          ]
+        );
     });
   };
-
-  const ageValidation = {
-      func: (val) => {
-        return isAtLeastAge(val, 18);
-      },
-      message: "You must be at least 18 years old to update your profile.",
-    },
-    nameValidation = {
-      func: (value) => !value.includes("admin"),
-      message: "came cannot include admin",
-    };
 
   return (
     <Box
@@ -85,58 +75,50 @@ export default function MuiUpdateProfileForm({
       <Typography component="h1" variant="h5" sx={{ pb: 2 }}>
         Update Profile
       </Typography>
-      <Stack gap="0.75rem">
+      <Stack>
         <AlphaMuiInput
-          variant={variant}
           placeholder={userData.firstName}
           label={"First name"}
           setValue={setFirstName}
           setIsReady={setIsReadyFirstName}
-          shrinkLabel={shrinkLabel}
-          isRequired={false}
           additionalValidation={[nameValidation]}
+          {...generalProps}
         />
         <AlphaMuiInput
-          variant={variant}
           placeholder={userData.lastName}
           label={"Last name"}
           setValue={setLastName}
           setIsReady={setIsReadyLastName}
-          shrinkLabel={shrinkLabel}
-          isRequired={false}
           additionalValidation={[nameValidation]}
+          {...generalProps}
         />
         <EmailMuiInput
-          variant={variant}
           placeholder={userData.email}
           label={"New Email"}
           setValue={setEmail}
           setIsReady={setIsReadyEmail}
-          shrinkLabel={shrinkLabel}
-          isRequired={false}
+          {...generalProps}
         />
         <DateMuiInput
-          isRequired={false}
-          variant={variant}
           defaultValue={userData.birthday}
           label="Birthday"
           setValue={setBirthday}
           setIsReady={setIsReadyBirthday}
-          shrinkLabel={shrinkLabel}
           additionalValidation={[ageValidation]}
+          {...generalProps}
         />
-        {errorMessage !== "" && (
-          <FormHelperText error>{errorMessage}</FormHelperText>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={submitIsDisabled()}
-        >
-          Update
-        </Button>
       </Stack>
+      {errorMessage !== "" && (
+        <FormHelperText error>{errorMessage}</FormHelperText>
+      )}
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        disabled={submitIsDisabled()}
+      >
+        Update
+      </Button>
     </Box>
   );
 }
