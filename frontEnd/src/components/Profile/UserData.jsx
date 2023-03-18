@@ -16,10 +16,12 @@ export default function UserData({ userData }) {
       </Typography>
       <Stack gap="1rem">
         <Typography>
-          <b>first name:</b> {userData.firstName}
+          <b>first name:</b>{" "}
+          <span className="capitalize">{userData.firstName}</span>
         </Typography>
         <Typography>
-          <b>last name:</b> {userData.lastName}
+          <b>last name:</b>{" "}
+          <span className="capitalize">{userData.lastName}</span>
         </Typography>
         <Typography>
           <b>email:</b> {userData.email}
