@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
+      lowercase: true,
       validate(value) {
         const regExp = /^[a-zA-Z]+/;
         if (!regExp.test(value)) throw new Error("should contain only letters");
