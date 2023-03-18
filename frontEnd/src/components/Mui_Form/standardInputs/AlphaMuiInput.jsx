@@ -7,8 +7,11 @@ let validators_alpha = [
     func: (value) => validator.isAlpha(value),
     message: "Please enter only letters",
   },
+  {
+    func: (value) => value.length > 1,
+    message: "Please enter at least 2 characters",
+  },
 ];
-
 
 AlphaMuiInput.defaultProps = {
   label: "Text",
@@ -22,11 +25,9 @@ AlphaMuiInput.defaultProps = {
   additionalValidators: [],
 };
 
-
 export default function AlphaMuiInput({ setValue, setIsReady, ...props }) {
   if (props.additionalValidators.length > 0)
     validators_alpha = [...validators_alpha, ...props.additionalValidators];
-
   return (
     <MuiInput
       setValue={setValue}
@@ -44,4 +45,3 @@ export default function AlphaMuiInput({ setValue, setIsReady, ...props }) {
     />
   );
 }
-
