@@ -5,6 +5,24 @@ import { convertToMuiDateFormat } from "utils/dates";
 
 //NOTE: validators is an array of objects with the following properties: {func: function,message: string}:
 
+MuiInput.defaultProps = {
+  name: "",
+  label: "",
+  isRequired: false,
+  type: "text",
+  placeholder: "",
+
+  icon: undefined,
+  variant: "outlined",
+  shrinkLabel: false,
+
+  passwordVerifyRepeat: false,
+
+  validators: [],
+  defaultValue: undefined,
+  setInputValue: undefined,
+};
+
 export default function MuiInput({ setValue, setIsReady, ...props }) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,6 +37,8 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
 
   const onInput = (e) => {
     const val = e.target.value;
+    if (props.setInputValue) props.setInputValue(val);
+
     if (val === "") {
       setIsError(false);
       setErrorMessage("");
@@ -105,12 +125,13 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
       : props.variant === "standard"
       ? "standard"
       : "filled";
+
   return (
     <>
       <TextField
-        name={props.name}
         onInput={onInput}
         error={isError}
+        name={props.name}
         type={props.type}
         label={props.label}
         variant={variantType}
@@ -137,17 +158,3 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
     </>
   );
 }
-
-MuiInput.defaultProps = {
-  name: "",
-  label: "Text Input",
-  isRequired: false,
-  type: "text",
-  icon: undefined,
-  variant: "outlined",
-  shrinkLabel: false,
-  defaultValue: undefined,
-  placeholder: "",
-  passwordVerifyRepeat: false,
-  validators: [],
-};
