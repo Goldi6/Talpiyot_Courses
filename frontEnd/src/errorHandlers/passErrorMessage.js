@@ -22,7 +22,7 @@ export default function passErrorMessage(error) {
 
     if (responseData === "TokenExpired") {
       deleteUserFromCookie();
-      return;
+      window.location.reload();
     }
   } else if (error.request) {
     // The request was made but no response was received
