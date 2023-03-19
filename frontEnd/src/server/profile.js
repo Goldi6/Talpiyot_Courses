@@ -42,5 +42,5 @@ export async function submitAbsenceReason(attendanceID, reason) {
 }
 
 export async function getUnattendedClasses() {
-  return axiosRequest("get", `/my-profile/unattendedClasses`, true);
+  return axiosRequest("get", `/my-profile/absences`, true);
 }
