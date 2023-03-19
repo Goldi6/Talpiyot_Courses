@@ -24,7 +24,6 @@ export default function StudentClass() {
       render = false;
     };
   }, [navigate]);
-  console.log(schedule);
   function onClickAttend(classId, attendanceId) {
     attendOnTime(classId, attendanceId).then((data) => {
       if (data.attended) {

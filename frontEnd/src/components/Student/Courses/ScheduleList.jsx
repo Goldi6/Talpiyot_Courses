@@ -9,11 +9,10 @@ import {
 import React from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { getWeekDay } from "../../../utils/dates";
 
 export default function ScheduleList({ scheduleArray, courseId, courseDates }) {
   const [open, setOpen] = React.useState(false);
-
-  console.log(scheduleArray);
 
   const handleClick = () => {
     setOpen(!open);
@@ -35,7 +34,8 @@ export default function ScheduleList({ scheduleArray, courseId, courseDates }) {
       </Typography>
       <Collapse in={open}>
         {scheduleArray.map((item, index) => {
-          const title = item.dateAndTime.date;
+          const weekDay = getWeekDay(item.date, "short");
+          const title = weekDay + " " + item.dateAndTime.date;
           const dates = item.dateAndTime.time;
 
           return (

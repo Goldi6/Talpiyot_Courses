@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export default function StudentCourses() {
   const navigate = useNavigate();
   const [courses, setCourses] = React.useState([]);
-  console.log(courses);
 
   React.useEffect(() => {
     let render = true;
