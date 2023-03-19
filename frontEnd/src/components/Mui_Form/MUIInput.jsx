@@ -32,7 +32,7 @@ export default function MuiInput({ setValue, setIsReady, ...props }) {
 
   let defaultValue = props.defaultValue;
   if (props.type === "date" && defaultValue !== "") {
-    defaultValue = convertToMuiDateFormat(defaultValue);
+    defaultValue = convertToMuiDateFormat(defaultValue || new Date());
   }
 
   const onInput = (e) => {
