@@ -9,43 +9,64 @@ export default function CourseData({
 }) {
   const { courseData } = useContext(CourseContext);
 
-  const onClickAddClasses = () => {
-    setShowEditSchedule(true);
-    setShowEditStudents(false);
-    setShowClassAttendance(false);
-  };
-  const onClickAddStudents = () => {
-    setShowEditSchedule(false);
-    setShowEditStudents(true);
-    setShowClassAttendance(false);
-  };
-  const onClickShowAttendance = () => {
-    setShowEditSchedule(false);
-    setShowEditStudents(false);
-    setShowClassAttendance(true);
-  };
+  const sections = [
+    setShowEditStudents,
+    setShowEditSchedule,
+    setShowClassAttendance,
+  ];
+  function setSelectionRange(num) {
+    sections.forEach((func, i) => {
+      if (num.toString() === i.toString()) func(true);
+      else {
+        func(false);
+      }
+    });
+  }
+
+  function onClickSetSection(e) {
+    setSelectionRange(e.target.value);
+  }
+
+
+
+  const buttonStyle = { fontSize: "0.7rem" };
 
   return (
     <>
-      <Stack gap="1rem">
+      <Stack gap="1">
         <h1 style={{ textAlign: "center" }}> {courseData.name}</h1>
         <h3 style={{ margin: 0, textAlign: "center" }}>
           {courseData.startDate} - {courseData.endDate}
         </h3>
         <Stack
           direction="row"
-          spacing="1rem"
+          spacing={{ xs: 1, sm: 2, md: 4 }}
           alignItems="center"
           justifyContent="center"
         >
-          <Button variant="contained" onClick={onClickShowAttendance}>
-            Show Attendance
+          <Button
+            sx={buttonStyle}
+            variant="contained"
+            onClick={onClickSetSection}
+            value={2}
+          >
+            Attendance
           </Button>
-          <Button variant="contained" onClick={onClickAddClasses}>
-            Add classes
+          <Button
+            variant="contained"
+            sx={buttonStyle}
+            onClick={onClickSetSection}
+            value={1}
+          >
+            Classes
           </Button>
-          <Button variant="contained" onClick={onClickAddStudents}>
-            Add students
+          <Button
+            variant="contained"
+            sx={buttonStyle}
+            onClick={onClickSetSection}
+            value={0}
+          >
+            Students
           </Button>
         </Stack>
       </Stack>
