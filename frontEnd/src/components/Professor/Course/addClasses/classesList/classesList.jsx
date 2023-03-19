@@ -6,13 +6,15 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { CourseContext } from "Context/courseContext";
 import { IconButton, ListItem } from "@mui/material";
 import { deleteClassFromCourse } from "server/db";
-import { getSimpleDate } from "../../../../../utils/dates";
+import { getSimpleDate, getWeekDay } from "../../../../../utils/dates";
 import { getSimpleTime } from "utils/dates";
 import { updateClassesInCourse } from "Reducers/Actions/CourseAction";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function ClassesList() {
   const { courseData, courseDispatch } = React.useContext(CourseContext);
@@ -31,6 +33,11 @@ export default function ClassesList() {
       courseDispatch(updateClassesInCourse({ ...res }));
     });
   }
+
+  const primaryTextStyle = {
+    fontSize: ".9rem",
+    fontWeight: "normal",
+  };
 
   return (
     <List
@@ -65,15 +72,31 @@ export default function ClassesList() {
                       display: "flex",
                       justifyContent: "space-between",
                       flexDirection: "row",
+                      borderBottom: "1px solid #ddd",
                     }}
                   >
+                    <span style={{ fontSize: ".75rem", padding: "0 .7rem" }}>
+                      {i}.
+                    </span>
+                    <ListItemIcon
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: ".5rem",
+                        paddingRight: ".5rem",
+                      }}
+                    >
+                      <span>{getWeekDay(listItem.date, "short")}</span>
+                      <AccessTimeIcon />
+                    </ListItemIcon>
                     <ListItemText
-                      primary={getSimpleDate(listItem.date)}
-                      secondary={
+                      secondary={getSimpleDate(listItem.date)}
+                      primary={
                         getSimpleTime(listItem.startTime) +
                         "-" +
                         getSimpleTime(listItem.endTime)
                       }
+                      primaryTypographyProps={{ style: primaryTextStyle }}
                     />
                     <IconButton
                       edge="end"
@@ -82,7 +105,7 @@ export default function ClassesList() {
                         onClickDeleteItem(listItem._id);
                       }}
                     >
-                      <DeleteForeverIcon />
+                      <ClearIcon />
                     </IconButton>
                   </ListItem>
                 );
