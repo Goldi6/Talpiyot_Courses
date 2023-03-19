@@ -1,18 +1,30 @@
 import React, { useContext, useState } from "react";
 import PickDate from "./PickDate";
 import PickTime from "./PickTime";
-import { getDateAndTimesFromMUI, isStartDateBeforeEndDate } from "utils/dates";
+import {
+  addHours,
+  convertToMuiDateFormat,
+  getDateAndTimesFromMUI,
+  isStartDateBeforeEndDate,
+} from "utils/dates";
 import { CourseContext } from "Context/courseContext";
 import { addClassToCourseSchedule } from "server/db";
-import { Button } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { updateClassesInCourse } from "Reducers/Actions/CourseAction";
 
 export default function Picker() {
   const { courseData, courseDispatch } = useContext(CourseContext);
-  const [dateValue, setDateValue] = React.useState("");
+  const [dateValue, setDateValue] = React.useState(
+    convertToMuiDateFormat(new Date())
+  );
 
-  const [startTimeValue, setStartTimeValue] = React.useState("");
-  const [endTimeValue, setEndTimeValue] = React.useState("");
+  const [startTimeValue, setStartTimeValue] = React.useState(
+    new Date()
+  );
+
+  const [endTimeValue, setEndTimeValue] = React.useState(
+    addHours(new Date(), 1)
+  );
 
   const [timeError, setTimeError] = useState({ isError: false, message: "" });
 
@@ -54,37 +66,37 @@ export default function Picker() {
 
   return (
     <form action="" onSubmit={onSubmitAddClass}>
-      <div className="flex-col">
+      <Typography variant="h5" style={{ textAlign: "center" }}>
+        Add Class
+      </Typography>
+      <br />
+      <Stack gap={1.5}>
         <div className="flex-row">
-          <h3>pick date:</h3>
           <PickDate value={dateValue} setValue={setDateValue} />
         </div>
-        <div className="flex-row">
-          {timeError.isError && (
-            <p style={{ color: "red", fontSize: "small" }}>
-              {timeError.message}
-            </p>
-          )}
-          <div className="flex-col">
-            <h3>Start time:</h3>
-            <PickTime value={startTimeValue} setValue={setStartTimeValue} />
-          </div>
-          <div className="flex-col">
-            <h3>End time</h3>
-            <PickTime value={endTimeValue} setValue={setEndTimeValue} />
-          </div>
-        </div>
-      </div>
-      <br></br>
-      <Button
-        variant="contained"
-        disabled={
-          dateValue === "" || startTimeValue === "" || endTimeValue === ""
-        }
-        type="submit"
-      >
-        Add Class
-      </Button>
+
+        {timeError.isError && (
+          <p style={{ color: "red", fontSize: "small" }}>{timeError.message}</p>
+        )}
+
+        <PickTime
+          value={startTimeValue}
+          setValue={setStartTimeValue}
+          label="Start time"
+        />
+        <PickTime
+          value={endTimeValue}
+          setValue={setEndTimeValue}
+          label="End time"
+        />
+        <Button
+          variant="contained"
+        
+          type="submit"
+        >
+          Add Class
+        </Button>
+      </Stack>
     </form>
   );
 }

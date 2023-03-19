@@ -19,7 +19,7 @@ export default function PickDate({ value, setValue }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
-        label="Date desktop"
+        label="Date"
         inputFormat="MM/DD/YYYY"
         minDate={minDate}
         maxDate={maxDate}
