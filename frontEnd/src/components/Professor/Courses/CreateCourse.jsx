@@ -11,7 +11,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { createCourse } from "server/db";
 import { UserContext } from "Context/userContext";
 import { useNavigate } from "react-router-dom";
-import { addOneYear, isStartDateBeforeEndDate } from "utils/dates";
+import { addMonthsToDate, addOneYear, isStartDateBeforeEndDate } from "utils/dates";
 import { CoursesContext } from "../../../Context/CoursesContext";
 import { addItem_Action } from "Reducers/CoursesReducer";
 
@@ -21,11 +21,12 @@ export default function CreateCourseForm() {
   const { coursesDispatch } = React.useContext(CoursesContext);
 
   const today = new Date();
+  const inAMonth = addMonthsToDate(today, 1);
   const maxDate = addOneYear(new Date());
 
   const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(inAMonth);
 
   const [errMessages, setErrMessages] = useState({
     name: "",
@@ -142,7 +143,7 @@ export default function CreateCourseForm() {
             </FormHelperText>
           )}
         </LocalizationProvider>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={name === ""}>
           Create
         </Button>
       </Stack>
