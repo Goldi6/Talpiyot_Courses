@@ -3,6 +3,12 @@ export function addOneYear(date) {
   return date;
 }
 
+export function addHours(date, hours) {
+  date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+
+  return date;
+}
+
 export function isStartDateBeforeEndDate(start, end) {
   let date1 = new Date(start).getTime();
   let date2 = new Date(end).getTime();
@@ -34,6 +40,13 @@ export function convertToMuiDateFormat(date) {
   const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-indexed, so add 1
   const year = date.getFullYear();
   return `${year}-${month}-${day}`;
+}
+
+export function convertToMuiTimeFormat(date) {
+  date = new Date(date);
+  const time =
+    date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes + ":00";
+  return time;
 }
 
 export function getDateAndTimesFromMUI(
@@ -68,3 +81,27 @@ export const simpleDateToDate = function (date) {
 
   return new Date(year, month - 1, day);
 };
+
+export function getWeekDay(date, type) {
+  return new Date(date).toLocaleString("default", { weekday: type });
+}
+
+export function addMonthsToDate(date, months) {
+  const originalMonth = date.getMonth();
+  const originalYear = date.getFullYear();
+
+  const newMonth = (originalMonth + months) % 12;
+  const yearOffset = Math.floor((originalMonth + months) / 12);
+  const newYear = originalYear + yearOffset;
+
+  const newDate = new Date(
+    newYear,
+    newMonth,
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds()
+  );
+
+  return newDate;
+}
