@@ -23,6 +23,7 @@ export default function AddStudentsForm() {
   const [nonParticipantStudents, setNonParticipantStudents] = React.useState(
     []
   );
+  const [filteredStudents, setFilteredStudents] = React.useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     let render = true;
@@ -32,6 +33,7 @@ export default function AddStudentsForm() {
           setStudentData([...dataList]);
           const newList = mapList([...dataList]);
           setNonParticipantStudents(newList);
+          setFilteredStudents(newList);
         })
         .catch((err) => {
           navigate(`/error/${err.message}`);
@@ -58,9 +60,25 @@ export default function AddStudentsForm() {
   function onClickAddStudent(_id) {
     addStudentToCourse(courseData._id, _id).then((res) => {
       courseDispatch(updateStudentsInCourse({ ...res }));
-      const newList = mapList([...studentData], _id);
-      setNonParticipantStudents(newList);
+      const newList_nonParticipants = mapList([...studentData], _id);
+      setNonParticipantStudents(newList_nonParticipants);
+      const newList_filtered = mapList([...nonParticipantStudents], _id);
+      setFilteredStudents(newList_filtered);
     });
+  }
+
+  function onInputFilter(e) {
+    const value = e.target.value;
+    if (value === "") setFilteredStudents(nonParticipantStudents);
+    else {
+      
+      const newList = nonParticipantStudents.filter(
+        (student) =>
+        student.firstName.startsWith(value) ||
+        student.lastName.startsWith(value)
+        );
+        setFilteredStudents(newList);
+      }
   }
 
   return (
@@ -73,15 +91,17 @@ export default function AddStudentsForm() {
             Add Students
           </Typography>
 
-          <TextField id="name" label="student Name" fullWidth />
+          <TextField
+            id="name"
+            label="student Name"
+            fullWidth
+            onInput={onInputFilter}
+          />
 
-          {/* <Button variant="contained" type="submit">
-            add student
-          </Button> */}
           <Box sx={{ height: 300, overflow: "auto" }}>
             <List dense={true}>
-              {nonParticipantStudents.length > 0 ? (
-                nonParticipantStudents.map((student, i) => {
+              {filteredStudents.length > 0 ? (
+                filteredStudents.map((student, i) => {
                   const studentId = student._id;
                   return (
                     <ListItem
